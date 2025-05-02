@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js  # 設定 Node.js 環境
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  # 可以根據需求更改 Node.js 版本 
+
+      - name: Install dependencies  # 安裝專案的依賴
+        run: npm install
+
+      - name: Build  # 執行 npm run build 來編譯專案
+        run: npm run build
+
+      - name: Check dist folder
+        run: ls -l ./dist
+        
+      - name: Check Git status
+        run: git status
+
+      - name: Deploy to GitHub Pages  # 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub 預設的 Token 來執行操作
+          publish_dir: ./dist  # 要推送的資料夾是 dist
+          publish_branch: gh-pages
+          force_orphan: true
