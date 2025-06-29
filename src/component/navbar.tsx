@@ -25,33 +25,38 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     const reSizeFunction = () =>{
         if(reSizeTimeout.current) clearTimeout(reSizeTimeout.current);
         reSizeTimeout.current = setTimeout(()=>{
-            if(window.innerWidth > 768 && navOpen === true){
+            if(window.innerWidth > 768){
                 setNavOpen(false);
                 navBoolean.current = true;
+                setTimeout(() => {
+                    navBoolean.current = false;
+                }, 300);
             }
         },100);
     }
-    window.addEventListener("resize",reSizeFunction);
     
+    // 初始化設定
+    useEffect(()=>{
+        window.addEventListener("resize",reSizeFunction);
+        // navBar收回功能
+        window.addEventListener("scroll",()=>{
+            if(scrollMoveTimeout.current) clearTimeout(scrollMoveTimeout.current);
+            if(scrollY < hiddenHeight){
+                setScrollMove(false)
+            }else{
+                scrollMoveTimeout.current = setTimeout(()=>{
+                    if( (scrollY - lastHeight.current) > 0){
+                        setScrollMove(true);
+                    }else{
+                        setScrollMove(false);
+                    }
+                    lastHeight.current = scrollY;
+                },100)
+            }
+        })
+    },[])
 
-    // navBar收回功能
-    window.addEventListener("scroll",()=>{
-        if(scrollMoveTimeout.current) clearTimeout(scrollMoveTimeout.current);
-        if(scrollY < hiddenHeight){
-            setScrollMove(false)
-        }else{
-            scrollMoveTimeout.current = setTimeout(()=>{
-                if( (scrollY - lastHeight.current) > 0){
-                    setScrollMove(true);
-                }else{
-                    setScrollMove(false);
-                }
-                lastHeight.current = scrollY;
-            },100)
-        }
-        
-        
-    })
+    
 
 
 
