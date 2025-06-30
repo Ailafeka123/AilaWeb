@@ -7,6 +7,10 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #fff;
+    background-color: white;
     border-radius: 50%;
+    transition: all 0.3s;
+    &:hover{
+        opacity: 0.5;
+    }
 }

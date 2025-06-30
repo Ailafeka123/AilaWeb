@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #da7e7e;
+    background-color: var(--background-1);
     padding: 1rem;
     gap: 1rem;
     @media(min-width: 768px){

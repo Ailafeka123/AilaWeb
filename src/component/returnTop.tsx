@@ -1,6 +1,6 @@
 "use client";
 import Style from "@/style/returnTop.module.scss"
-
+import Image from "next/image";
 export default function ReturnTop () {
     const scrollToTop = () => {
         window.scrollTo({
@@ -12,7 +12,7 @@ export default function ReturnTop () {
         <button className={Style.scrollTop} onClick={()=>{
             scrollToTop();
         }}>
-            Top
+            <Image src="/ArrowTop.svg" width={40} height={40} alt="arrowTop"></Image>
         </button>
     );
 }
