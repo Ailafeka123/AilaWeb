@@ -5,6 +5,7 @@
   --background-1: #d1d5db;
   --foreground: #171717;
   --foreground-1:#1e2939;
+  --foreground-2:#28364b;
 
 }
 
@@ -33,4 +34,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   font-size: 1rem;
+  main{
+    margin-top: 80px;
+  }
 }
