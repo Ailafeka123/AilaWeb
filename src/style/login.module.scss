@@ -21,17 +21,72 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: start;
-        padding: 1rem;
+        justify-content: space-around;
+        padding:8px;
         width: 100%;
         height: 100%;
         h2{
             font-size: 2rem;
         }
-        input{
-            border: 2px solid var(--foreground-1);
+        button{
+            background-color: rgb(127, 197, 197);
+            padding: 8px 8px;
             border-radius: 8px;
+            &:hover{
+                background-color: rgb(76, 122, 122);
+            }
         }
+         @media(min-width:320px){
+            padding: 1rem;
+        }
+        .inputDiv{
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            margin:1rem 0;
+            input{
+                width: 80%;
+                border: 2px solid var(--foreground-1);
+                border-radius: 8px;
+                padding:6px 1rem;
+                &:focus + label,
+                &:not(:placeholder-shown) + label {
+                    top: 0;
+                    transform: translateX(-1rem) translateY(-50%);
+                }
+            }
+            input+label{
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: all 0.3s;
+            }
+            
+            .eyeButton{
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                right: 23%;
+                width: 30px;
+                height: 30px;
+                padding: 0;
+            }
+            
+        }
+        
+        .errorMessageDiv{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            color: red;
+        }
+
         .buttonDiv{
             display: flex;
             flex-direction: row;
