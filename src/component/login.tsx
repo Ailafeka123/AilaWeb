@@ -2,7 +2,7 @@
 import { useState,useRef,forwardRef, useEffect  } from "react";
 import Style from "@/style/login.module.scss"
 import Image from "next/image";
-import LoginOrRegister from "@/lib/LoginOrRegister";
+// import LoginOrRegister from "@/lib/LoginOrRegister";
 
 type LoginProps = {};
 const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
