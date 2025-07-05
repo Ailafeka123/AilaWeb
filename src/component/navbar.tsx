@@ -7,7 +7,9 @@ import { usePathname } from "next/navigation";
 import Login from "./login";
 
 import LoginOut from "@/lib/loginOut";
-import {auth} from '@/lib/firebase';
+
+import {app} from "@/lib/firebase";
+import { getAuth } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 // 導入第一個視窗的高度，預設500
 type navbarProps = {
@@ -140,7 +142,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             }
         }
 
-        
+
         // 更新初始寬度
         lastSizeWidth.current = window.innerWidth;
         // 監聽寬度變化，確認是否要關閉nav
@@ -155,6 +157,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         setNavListActive(navArray);
 
         // 判斷是否登入 登入會把loginDiv關掉
+        const auth =  getAuth(app);
         const unsub =  onAuthStateChanged(auth,(user)=>{
             if(user){
                 console.log("來自nav提示:登入成功");

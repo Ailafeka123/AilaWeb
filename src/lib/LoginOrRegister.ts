@@ -1,8 +1,10 @@
 'use client';
-import {auth} from "@/lib/firebase";
+import {app} from "@/lib/firebase";
+import { getAuth } from "firebase/auth";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginOrRegister = async (method:'Login'|'Register', email:string, password:string) => {
+    const auth = getAuth(app);
     try{
         if(method === "Login"){
             const userLogin = await signInWithEmailAndPassword(auth,email,password);
