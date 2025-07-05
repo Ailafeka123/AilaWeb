@@ -80,20 +80,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         },300)
     }
 
-    // 監聽寬度變化 防抖設定
-    const reSizeFunction = () =>{
-        if(reSizeTimeout.current) clearTimeout(reSizeTimeout.current);
-        reSizeTimeout.current = setTimeout(()=>{
-            // 新的寬度為電腦寬 且 舊的是手機寬 則關閉nav開啟
-            if(window.innerWidth > 768){
-                if(lastSizeWidth.current !== null && lastSizeWidth.current < 768){
-                    closeNav();
-                }
-            }
-            // 更新寬度 用於下次確認
-            lastSizeWidth.current = window.innerWidth;
-        },100);
-    }
+    
     // nav滾動收回功能
     const scrollCloseNav = () =>{
         // 如果準備判斷 則重製時間
@@ -137,6 +124,20 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     }
     // 初始化設定 抓取寬度 開啟對於寬度與滾動的監聽事件
     useEffect(()=>{
+        // 監聽寬度變化 防抖設定 由於vercal 回報window not defined 移入useEffect
+        const reSizeFunction = () =>{
+            if(reSizeTimeout.current) clearTimeout(reSizeTimeout.current);
+            reSizeTimeout.current = setTimeout(()=>{
+                // 新的寬度為電腦寬 且 舊的是手機寬 則關閉nav開啟
+                if(window.innerWidth > 768){
+                    if(lastSizeWidth.current !== null && lastSizeWidth.current < 768){
+                        closeNav();
+                    }
+                }
+                // 更新寬度 用於下次確認
+                lastSizeWidth.current = window.innerWidth;
+            },100);
+        }
         // 更新初始寬度
         lastSizeWidth.current = window.innerWidth;
         // 監聽寬度變化，確認是否要關閉nav

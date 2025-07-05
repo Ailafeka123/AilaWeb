@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Navbar from "@/component/navbar"
 import Footer from "@/component/footer"
 import { useState, useEffect } from "react"
@@ -23,7 +23,7 @@ export default function selfdata () {
             unsub();
         });
     },[])
-    
+
     return (
         <>
             <Navbar/>
