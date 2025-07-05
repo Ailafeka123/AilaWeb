@@ -4,27 +4,27 @@ import Footer from "@/component/footer"
 import { useState, useEffect } from "react"
 
 
-import {app} from "@/lib/firebase";
-import { getAuth } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+// import {app} from "@/lib/firebase";
+// import { getAuth } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 
 
 export default function selfdata () {
 
-    useEffect(()=>{
-        const auth = getAuth(app);
-        const unsub =onAuthStateChanged(auth,(user)=>{
-            if(user){
-                console.log(`user = ${user}`)
-            }else{
-                console.log("來自nav提示:尚未登入");
-            }
+    // useEffect(()=>{
+    //     const auth = getAuth(app);
+    //     const unsub =onAuthStateChanged(auth,(user)=>{
+    //         if(user){
+    //             console.log(`user = ${user}`)
+    //         }else{
+    //             console.log("來自nav提示:尚未登入");
+    //         }
 
-        })
-        return(()=>{
-            unsub();
-        });
-    },[])
+    //     })
+    //     return(()=>{
+    //         unsub();
+    //     });
+    // },[])
 
     return (
         <>
