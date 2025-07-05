@@ -2,6 +2,8 @@
 import { useState,useRef,forwardRef, useEffect  } from "react";
 import Style from "@/style/login.module.scss"
 import Image from "next/image";
+import LoginOrRegister from "@/lib/LoginOrRegister";
+
 type LoginProps = {};
 const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
     // 帳號
@@ -11,7 +13,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
     const [loginPasswordShow,setLoginPasswordShow] = useState<Boolean>(false);
     const LoginPasswordRef = useRef<HTMLButtonElement|null>(null)
     // 登入或註冊 Login / Register
-    const [submitMethod,setSubmitMethod] = useState<string>("Login");
+    const [submitMethod,setSubmitMethod] = useState<"Login"|"Register">("Login");
     // 錯誤訊息
     const [errorMessage,setErrorMessage] = useState<string | null>(null);
     // 資料傳遞冷卻 true = 冷卻完成
@@ -29,7 +31,6 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
         const allowedChars = /[^A-Za-z0-9@._%+\-!]/g;
         const newWord = e.target.value.replace(allowedChars, "");
         setLoginPassword(newWord);
-        // console.log(newWord.length)
     }
     //眼睛打開時 監聽事件=>點擊非眼睛時關閉 確保安全性
     useEffect(()=>{
@@ -47,7 +48,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
     },[loginPasswordShow])
 
     // 驗證帳號密碼沒有錯誤
-    const detest = (account:string, password : string) =>{
+    const detest = async(account:string, password : string) =>{
         // 驗證符合信箱格式
         const reg : RegExp  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         let AccountCheck = reg.test(account);
@@ -74,7 +75,9 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
         // 全部通過 以下確認是登入還是註冊。
         console.log("暫且通過 暫時清空error")
         setErrorMessage("")
-        alert("登入系統開發中")
+        // 進行登入
+        await LoginOrRegister(submitMethod,account,password);
+        
 
     }
 

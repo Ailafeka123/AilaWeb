@@ -5,6 +5,10 @@ import Style from '@/style/navbar.module.scss'
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Login from "./login";
+
+import LoginOut from "@/lib/loginOut";
+import {auth} from '@/lib/firebase';
+import { onAuthStateChanged } from "firebase/auth";
 // 導入第一個視窗的高度，預設500
 type navbarProps = {
     hiddenHeight ?: number;
@@ -145,10 +149,25 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         // 確保符合nav長度 避免後續忘記修正
         let navArray = Array(navList.current.length).fill(false);
         setNavListActive(navArray);
+
+        // 判斷是否登入 登入會把loginDiv關掉
+        const unsub =  onAuthStateChanged(auth,(user)=>{
+            if(user){
+                console.log("來自nav提示:登入成功");
+                console.log(`user = `,user);
+                setUserLogin(true);
+                setLoginDiv(false);
+            }else{
+                console.log("來自nav提示:尚未登入");
+                setUserLogin(false);
+            }
+
+        })
         return () =>{
             window.removeEventListener("resize",reSizeFunction);
             window.removeEventListener("scroll",scrollCloseNav);
             document.removeEventListener("pointerdown",clickOutside);
+            unsub();
         }
     },[])
     // 排除第一次渲染 當點擊的時候會進行選單的開關
@@ -216,13 +235,19 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     childTemp.push(<li key={`child-${key}-${childrenKey}`}><Link href={childrenIndex.href}>{childrenIndex.title}</Link></li>);
                 })
             }else{
-                if(index.title === "個人資訊" && userLogin === false){
-                    indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
+                if(index.title === "個人資訊"){
+                    if(userLogin === false){
+                        indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
                             setLoginDiv(true); 
                             closeNav();
                         }}>登入</span>)
+                    }else{
+                        indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
+                    }
+                    
                 }else{
                     indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
+                    
                 }
             }
 
@@ -232,6 +257,9 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     {childTemp.length !== 0?<ul className={`${Style.childUl} ${navListActive[key] === false? Style.childHidden:""}`}>{childTemp}</ul>:null}
                 </li>);
         })
+        if(userLogin === true){
+            temp.push(<li key={`li-loginOut`}><span key={`span-loginOut`} onClick={(e)=>{LoginOut()}}>登出</span></li>)
+        }
 
         return(
             <ul>
@@ -286,7 +314,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                 </nav>
             </header>
             {loginDiv &&< Login ref={loginRef}/>}
-            {/* < Login ref={loginRef}/> */}
         </>
         
     );
