@@ -193,22 +193,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         }
     },[navOpen])
     
-    // 進行轉跳的部分 待修正 最終效果希望達到同頁進行smooth轉跳
-    // useEffect(() => {
-    //     closeNav();
-    //     if (typeof window === 'undefined') return;
-    //     const hash = window.location.hash?.substring(1);
-    //     if (!hash) return;
-    //     // 等待 DOM 內容渲染完再滾動
-    //     setTimeout(() => {
-    //         const el = document.getElementById(hash);
-    //         if (el) {
-    //             el.scrollIntoView({ behavior: 'smooth' });
-    //         }   
-            
-    //     }, 100);
-    // }, [pathname]);
-
     // 顯示navListShow的部分 
     const NavListShow = () =>{
         let temp : ReactElement[] = [];

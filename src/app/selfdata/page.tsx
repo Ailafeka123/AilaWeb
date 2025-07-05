@@ -20,9 +20,10 @@ export default function selfdata () {
 
         })
         return(()=>{
-            unsub
+            unsub();
         });
     },[])
+    
     return (
         <>
             <Navbar/>
