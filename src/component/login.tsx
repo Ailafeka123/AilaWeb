@@ -76,7 +76,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
         console.log("暫且通過 暫時清空error")
         setErrorMessage("")
         // 進行登入
-        await LoginOrRegister(submitMethod,account,password);
+        // await LoginOrRegister(submitMethod,account,password);
         
 
     }
