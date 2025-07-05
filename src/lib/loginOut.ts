@@ -1,5 +1,7 @@
+"use client";
 import { signOut } from "firebase/auth";
 import {auth} from "@/lib/firebase"
+
 const LoginOut = async() =>{
     try{
         await signOut(auth);

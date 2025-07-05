@@ -81,33 +81,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     }
 
     
-    // nav滾動收回功能
-    const scrollCloseNav = () =>{
-        // 如果準備判斷 則重製時間
-        if(scrollMoveTimeout.current) clearTimeout(scrollMoveTimeout.current);
-        // 如果位於最上面空間
-        if(scrollY < hiddenHeight ){
-            if(lastScrollMove.current[1] === true){
-                lastScrollMove.current[1] = false;
-                setScrollMove(false);
-            }
-            // 同樣的防抖設定，確保在最上面也會刷新上一次的滾動高度
-            scrollMoveTimeout.current = setTimeout(()=>{
-                lastScrollMove.current[0] = scrollY;
-            },100)
-        }else{
-            scrollMoveTimeout.current = setTimeout(()=>{
-                if( (scrollY - lastScrollMove.current[0]) > 0){
-                    lastScrollMove.current[1] = true;
-                    setScrollMove(true);
-                }else{
-                    lastScrollMove.current[1] = false;
-                    setScrollMove(false);
-                }
-                lastScrollMove.current[0] = scrollY;
-            },100)
-        }
-    }
+    
     // 點擊非header的情況 關閉nav
     const clickOutside = (e :PointerEvent) =>{
         if(headerDiv.current && e.target instanceof Node && !headerDiv.current.contains(e.target)  && clickCloseNav.current === true){
@@ -138,6 +112,35 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                 lastSizeWidth.current = window.innerWidth;
             },100);
         }
+        // nav滾動收回功能 由於vercal 回報window not defined 移入useEffect   
+        const scrollCloseNav = () =>{
+            // 如果準備判斷 則重製時間
+            if(scrollMoveTimeout.current) clearTimeout(scrollMoveTimeout.current);
+            // 如果位於最上面空間
+            if(window.scrollY < hiddenHeight ){
+                if(lastScrollMove.current[1] === true){
+                    lastScrollMove.current[1] = false;
+                    setScrollMove(false);
+                }
+                // 同樣的防抖設定，確保在最上面也會刷新上一次的滾動高度
+                scrollMoveTimeout.current = setTimeout(()=>{
+                    lastScrollMove.current[0] = window.scrollY;
+                },100)
+            }else{
+                scrollMoveTimeout.current = setTimeout(()=>{
+                    if( (window.scrollY - lastScrollMove.current[0]) > 0){
+                        lastScrollMove.current[1] = true;
+                        setScrollMove(true);
+                    }else{
+                        lastScrollMove.current[1] = false;
+                        setScrollMove(false);
+                    }
+                    lastScrollMove.current[0] = window.scrollY;
+                },100)
+            }
+        }
+
+        
         // 更新初始寬度
         lastSizeWidth.current = window.innerWidth;
         // 監聽寬度變化，確認是否要關閉nav

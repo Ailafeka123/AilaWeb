@@ -2,7 +2,7 @@
 import { useState,useRef,forwardRef, useEffect  } from "react";
 import Style from "@/style/login.module.scss"
 import Image from "next/image";
-// import LoginOrRegister from "@/lib/LoginOrRegister";
+import LoginOrRegister from "@/lib/LoginOrRegister";
 
 type LoginProps = {};
 const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
@@ -76,7 +76,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
         console.log("暫且通過 暫時清空error")
         setErrorMessage("")
         // 進行登入
-        // await LoginOrRegister(submitMethod,account,password);
+        await LoginOrRegister(submitMethod,account,password);
         
 
     }
