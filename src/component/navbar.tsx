@@ -199,12 +199,9 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             let indexTemp : ReactElement[] = [];
 
             if(index.children){
-                let imgSrc = "/arrow-up-light.svg";
-                if(window.innerWidth < 768){
-                    imgSrc = navListActive[key] === true? "/arrow-down-light.svg":"/arrow-up-light.svg";
-                }
+                let imgSrc = navListActive[key] === true? "/arrow-down-light.svg":"/arrow-up-light.svg";
                 indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
-                    if(window.innerWidth < 768){
+                    if(lastSizeWidth.current && lastSizeWidth.current < 768){
                         setNavListActive(List=>{
                         const newArray = Array(List.length).fill(false);
                         if(List[key] === false){
