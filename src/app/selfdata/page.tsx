@@ -4,13 +4,15 @@ import Footer from "@/component/footer"
 import { useState, useEffect } from "react"
 
 
-import {auth} from '@/lib/firebase';
+import {app} from "@/lib/firebase";
+import { getAuth } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 
 
 export default function selfdata () {
 
     useEffect(()=>{
+        const auth = getAuth(app);
         const unsub =onAuthStateChanged(auth,(user)=>{
             if(user){
                 console.log(`user = ${user}`)
