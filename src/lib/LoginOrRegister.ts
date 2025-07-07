@@ -3,7 +3,7 @@ import {app} from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 
-const LoginOrRegister = async (method:'Login'|'Register', email:string, password:string) => {
+const LoginOrRegister = async (method:'Login'|'Register', email:string, password:string):Promise<string | null>  => {
     const auth = getAuth(app);
     try{
         if(method === "Login"){
@@ -11,8 +11,9 @@ const LoginOrRegister = async (method:'Login'|'Register', email:string, password
         }else{
             const userCreate = await createUserWithEmailAndPassword(auth,email,password);
         }
+        return null
     }catch(e : any){
-        console.error("登入註冊失敗",e.message);
+        return e.message;
     }
 }
 export default LoginOrRegister;

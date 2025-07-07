@@ -12,43 +12,70 @@
     transform: translateY(-50%);
     border-radius: 8px;
     border: 2px solid var(--foreground-1);
-    @media(min-width: 768px){
+    @media(min-width:425px){
         left: 50%;
-        width: 50%;
+        width: 400px;
         transform: translate(-50%,-50%);
     }
-    form{
+    @media(min-width: 768px){
+        left: 50%;
+        width: 500px;
+        transform: translate(-50%,-50%);
+    }
+    .form{
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         padding:8px;
         width: 100%;
         height: 100%;
+        @media(min-width:768px){
+            padding: 16px;
+        }
         h2{
             font-size: 2rem;
         }
+        .passwordDiv{
+            width: 100%;
+            .forgetPasswordSpan{
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        
         button{
             background-color: rgb(127, 197, 197);
             padding: 8px 8px;
             border-radius: 8px;
+            width: 20%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s;
             &:hover{
                 background-color: rgb(76, 122, 122);
             }
-        }
-         @media(min-width:320px){
-            padding: 1rem;
+            @media (min-width:768px){
+                width: 15%;
+                height: 30px;
+            }
         }
         .inputDiv{
             position: relative;
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
+            gap: 4px;
             width: 100%;
-            margin:1rem 0;
+            height: 50px;
+
             input{
                 width: 80%;
+                height: 30px;
                 border: 2px solid var(--foreground-1);
                 border-radius: 8px;
                 padding:6px 1rem;
@@ -71,9 +98,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                right: 23%;
-                width: 30px;
-                height: 30px;
+                right: calc(20% + 0.5rem);
+                width: 25px;
+                height: 25px;
                 padding: 0;
             }
             
@@ -83,9 +110,63 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 2rem;
             width: 100%;
             color: red;
+
         }
+
+        .forgetPasswordDiv{
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            position: absolute;
+            width: 100%;
+            height: 80%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background-color: var(--background-1);
+            border-radius: 8px;
+            border: 2px solid var(--foreground-1);
+            padding:4px;
+            transition: all 0.3s;
+            @media(min-width:768px){
+                padding:16px;
+            }
+            &.forgetPasswordDivHidden{
+                display: none;
+            }
+            .closeForgetPasswordDiv{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: end;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                .closeForgetPasswordButton{
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 0 6px 0 0;
+                }
+            }
+            input{
+                width: 80%;
+                height: 30px;
+                border: 2px solid var(--foreground-1);
+                border-radius: 8px;
+                padding:6px 1rem;
+            }
+            .buttonDisable{
+                width:  200px;
+                background-color: rgb(76, 122, 122);
+            }
+        }
+
+
 
         .buttonDiv{
             display: flex;
