@@ -6,7 +6,8 @@
   --foreground: #171717;
   --foreground-1:#1e2939;
   --foreground-2:#28364b;
-
+  --tagcolor:rgb(127, 197, 197);
+  --tagcolor-1:rgb(76, 122, 122);
 }
 
 @theme inline {

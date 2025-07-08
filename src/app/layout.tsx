@@ -1,7 +1,10 @@
+
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReturnTop from "@/component/returnTop";
+import Navbar from "@/component/navbar";
+import Footer from "@/component/footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,8 +40,10 @@ export default function RootLayout( {children}: Readonly<{children: React.ReactN
   return (
     <html lang="zh-Hant">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Navbar></Navbar>
         {children}
         <ReturnTop></ReturnTop>
+        <Footer/> 
       </body>
     </html>
   );

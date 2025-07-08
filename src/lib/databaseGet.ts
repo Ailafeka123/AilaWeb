@@ -1,10 +1,9 @@
 "use client"
-import {app} from "@/lib/firebase";
-import { getFirestore,doc,getDoc } from "firebase/firestore";
+import { db } from "./database";
+import { doc,getDoc } from "firebase/firestore";
 
 // mod = 資料庫的 id = mainKey;
-export default async function DatabaseGet (mod:string,id:string):Promise<Record<string, any> | null>{
-    const db = getFirestore(app);
+export default async function databaseGet (mod:string,id:string):Promise<Record<string, any> | null>{
     try{
         const docRef =  doc( db, mod, id);
         const snapshot = await getDoc(docRef);

@@ -8,9 +8,10 @@ import Login from "./login";
 
 import LoginOut from "@/lib/loginOut";
 
-import {app} from "@/lib/firebase";
-import { getAuth } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { Auth } from "@/lib/firebaseAuth";
+import { onAuthStateChanged} from "firebase/auth";
+import databaseGet from "@/lib/databaseGet";
+import databaseSet from "@/lib/databaseSet";
 // 導入第一個視窗的高度，預設500
 type navbarProps = {
     hiddenHeight ?: number;
@@ -154,16 +155,51 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         
         // 確保符合nav長度 避免後續忘記修正
         let navArray = Array(navList.current.length).fill(false);
-        setNavListActive(navArray);
-
+        setNavListActive(navArray); 
         // 判斷是否登入 登入會把loginDiv關掉
-        const auth =  getAuth(app);
-        const unsub =  onAuthStateChanged(auth,(user)=>{
+        // 確認是否有抓到轉跳訊息 由於時間問題  採用signInWithPopup 暫不使用signInWithRedirect
+        // getRedirectResult(Auth).then(result => {
+        //     if(result !== null){
+        //         const credential = GoogleAuthProvider.credentialFromResult(result);
+        //         if(credential !== null){
+        //             const token = credential.accessToken;
+        //         }
+        //         const user = result.user;
+        //     }
+        //     console.log("進行檢查  是否有在讀取auth")
+        //     console.log(`result = ${result}`);
+        //     if (result?.user) {
+        //     console.log("redirect 登入成功", result.user);
+        //     }
+        // }).catch(console.error);
+
+        const unsub =  onAuthStateChanged(Auth,(user)=>{
             if(user){
                 console.log("來自nav提示:登入成功");
                 console.log(`user = `,user);
+                console.log(`user.uid = ${user.uid}`);
                 setUserLogin(true);
                 setLoginDiv(false);
+                (async () =>{
+                    // 讀取是否有創立帳號訊息
+                    const data = await databaseGet("Auth",user.uid);
+                    // 沒有話建立建立
+                    console.log(user.email)
+                    if(data === null){
+                        console.log(`data = ${data}`);
+                        const dataInput = {
+                            id:user.uid,
+                            email:user.email || null,
+                            level:"guest"
+                        }
+                        const result = await databaseSet("Auth",dataInput);
+                        console.log(`result = ${result}`);
+                        console.log(result)
+                    }else{
+                        console.log(data);
+                    }
+                })();
+                
             }else{
                 console.log("來自nav提示:尚未登入");
                 setUserLogin(false);

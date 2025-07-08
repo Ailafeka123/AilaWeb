@@ -46,7 +46,7 @@
         }
         
         button{
-            background-color: rgb(127, 197, 197);
+            background-color: var(--tagcolor);
             padding: 8px 8px;
             border-radius: 8px;
             width: 20%;
@@ -56,7 +56,7 @@
             justify-content: center;
             transition: all 0.1s;
             &:hover{
-                background-color: rgb(76, 122, 122);
+                background-color: var(--tagcolor-1);
             }
             @media (min-width:768px){
                 width: 15%;
@@ -162,7 +162,7 @@
             }
             .buttonDisable{
                 width:  200px;
-                background-color: rgb(76, 122, 122);
+                background-color: var(--tagcolor-1);
             }
         }
 

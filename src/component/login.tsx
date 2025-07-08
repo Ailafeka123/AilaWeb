@@ -4,7 +4,7 @@ import Style from "@/style/login.module.scss"
 import Image from "next/image";
 import LoginOrRegister from "@/lib/LoginOrRegister";
 import AuthForget from "@/lib/AuthForget";
-
+import signInWithGoogle from "@/lib/signInWithGoogle";
 
 type LoginProps = {};
 const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
@@ -19,8 +19,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
     // 錯誤訊息
     const [errorMessage,setErrorMessage] = useState<string | null>(null);
     // 註冊資料傳遞冷卻 true = 冷卻完成
-    const coldDownCheck = useRef<Boolean>(true); 
-    // const messageCold = useRef <ReturnType<typeof setTimeout> | null> (null);
+    const coldDownCheck = useRef<Boolean>(true);
 
     // 忘記密碼Div false = hidden  true = show
     const [forgetDiv,setForgetDiv] = useState<Boolean>(false);
@@ -89,7 +88,6 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
                 forgetColdDown.current = true;
                 return;
             }else{
-                console.log(forgetInput);
                 const send :null|string = await AuthForget(forgetInput);
                 if(send === null){
                     setForgetMessage("如有註冊，已送出訊息至您的信箱")
@@ -101,9 +99,6 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
             setForgetMailCountDown(60);
         }
     }
-
-
-
 
     // 可以再次傳送驗證訊息
     useEffect(()=>{
@@ -168,6 +163,14 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
 
     }
 
+    const googleLogin = async() =>{
+        if(coldDownCheck.current === true){
+            coldDownCheck.current = false;
+            await signInWithGoogle();
+            coldDownCheck.current = true;
+        }
+    }
+
     return(
         <div ref={ref} className={Style.loginDiv} >
             <form className={Style.form} onSubmit={(e)=>{
@@ -212,6 +215,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
                 <div className={Style.errorMessageDiv}>
                     {errorMessage &&<span>{errorMessage}</span>}
                 </div>
+                <span onClick={()=>{googleLogin()}}>google</span>
                 {/* <a href="https://www.flaticon.com/free-icons/google" title="google icons">Google icons created by Freepik - Flaticon</a> */}
                 {/* <a target="_blank" href="https://icons8.com/icon/17949/google">Google</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a> */}
                 <div className={Style.buttonDiv}>
