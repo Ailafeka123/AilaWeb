@@ -12,6 +12,8 @@ import { Auth } from "@/lib/firebaseAuth";
 import { onAuthStateChanged} from "firebase/auth";
 import databaseGet from "@/lib/databaseGet";
 import databaseSet from "@/lib/databaseSet";
+
+import { useCookieConsent } from "@/lib/cookiesCheckContext";
 // 導入第一個視窗的高度，預設500
 type navbarProps = {
     hiddenHeight ?: number;
@@ -70,6 +72,9 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 針對點擊選單外部時時確認
     const headerDiv = useRef<HTMLDivElement|null>(null);
 
+    // 是否使用Cookies
+    const {consent, setConsent} = useCookieConsent();
+
     // 關閉nav功能
     const closeNav = () =>{
         // 關閉所有複選單
@@ -83,6 +88,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         },300)
     }
 
+    
     
     
     // 點擊非header的情況 關閉nav
@@ -213,6 +219,56 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             unsub();
         }
     },[])
+
+    // useEffect(()=>{
+    //     console.log(`consent = ${consent}`)
+    //     if(consent === true){
+    //         console.log("已授權 開啟監聽")
+    //         const user = Auth.currentUser;
+    //         console.log(user);
+    //         const unsub =  onAuthStateChanged(Auth,(user)=>{
+    //             if(user){
+    //                 console.log("來自nav提示:登入成功");
+    //                 console.log(`user = `,user);
+    //                 console.log(`user.uid = ${user.uid}`);
+    //                 setUserLogin(true);
+    //                 setLoginDiv(false);
+    //                 (async () =>{
+    //                     // 讀取是否有創立帳號訊息
+    //                     const data = await databaseGet("Auth",user.uid);
+    //                     // 沒有話建立建立
+    //                     console.log(user.email)
+    //                     if(data === null){
+    //                         console.log(`data = ${data}`);
+    //                         const dataInput = {
+    //                             id:user.uid,
+    //                             email:user.email || null,
+    //                             level:"guest"
+    //                         }
+    //                         const result = await databaseSet("Auth",dataInput);
+    //                         console.log(`result = ${result}`);
+    //                         console.log(result)
+    //                     }else{
+    //                         console.log(data);
+    //                     }
+    //                 })();
+                    
+    //             }else{
+    //                 console.log("來自nav提示:尚未登入");
+    //                 setUserLogin(false);
+    //             }
+
+    //         })
+    //         return ()=>{
+    //             unsub();
+    //         }
+    //     }else{
+    //         console.log("失去授權 如果有登入將進行登出")
+    //         const unsub  = onAuthStateChanged(Auth)
+
+    //     }
+    // },[consent])
+
     // 排除第一次渲染 當點擊的時候會進行選單的開關
     useEffect(()=>{
         if(navBoolean.current === true){
@@ -239,8 +295,8 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 顯示navListShow的部分 
     const NavListShow = () =>{
         let temp : ReactElement[] = [];
-
-        navList.current.forEach( (index,key )=>{
+        
+        for(const [key,index] of navList.current.entries()){
             let childTemp : ReactElement[] = [];
             let indexTemp : ReactElement[] = [];
 
@@ -263,6 +319,8 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                 })
             }else{
                 if(index.title === "個人資訊"){
+                    // 同意使用cookies才顯示登入
+                    if(consent === false) continue;
                     if(userLogin === false){
                         indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
                             setLoginDiv(true); 
@@ -271,6 +329,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     }else{
                         indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
                     }
+                    
                     
                 }else{
                     indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
@@ -283,8 +342,8 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     {indexTemp}
                     {childTemp.length !== 0?<ul className={`${Style.childUl} ${navListActive[key] === false? Style.childHidden:""}`}>{childTemp}</ul>:null}
                 </li>);
-        })
-        if(userLogin === true){
+        }
+        if(userLogin === true && consent === true){
             temp.push(<li key={`li-loginOut`}><span key={`span-loginOut`} onClick={(e)=>{LoginOut()}}>登出</span></li>)
         }
 

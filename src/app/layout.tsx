@@ -2,9 +2,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ReturnTop from "@/component/returnTop";
+import { CookieConsentProvider } from "@/lib/cookiesCheckContext";
+import Cookies from "@/component/cookies";
 import Navbar from "@/component/navbar";
 import Footer from "@/component/footer";
+import ReturnTop from "@/component/returnTop";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -40,7 +42,10 @@ export default function RootLayout( {children}: Readonly<{children: React.ReactN
   return (
     <html lang="zh-Hant">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navbar></Navbar>
+        <CookieConsentProvider>
+          <Navbar></Navbar>
+          <Cookies/>
+        </CookieConsentProvider>
         {children}
         <ReturnTop></ReturnTop>
         <Footer/> 

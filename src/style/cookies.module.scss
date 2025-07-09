@@ -1,0 +1,28 @@
+.Cookies{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:20px;
+    background-color: var(--foreground-2);
+    z-index: 999;
+    padding: 8px;
+    &.hidden{
+        display: none;
+    }
+    button{
+        height: 30px;
+        width: 80px;
+        border-radius: 8px;
+        background-color: var(--tagcolor);
+        &:hover{
+            cursor: pointer;
+            background-color: var(--tagcolor-1);
+        }
+    }
+}
