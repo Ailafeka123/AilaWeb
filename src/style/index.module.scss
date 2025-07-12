@@ -19,6 +19,13 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
+        .FirstIndexH1{
+            transform: translateX(-100vw);
+            transition: all 1s;
+        }
+        .FirstIndexActive{
+            transform: translateX(0);
+        }
     }
     .secIndex{
         display: flex;

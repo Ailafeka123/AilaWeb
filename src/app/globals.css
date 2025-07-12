@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --background-1: #d1d5db;
+  --background-1:#d1d5db;
+  --background-2:#a8acb1;
   --foreground: #171717;
   --foreground-1:#1e2939;
   --foreground-2:#28364b;
@@ -24,6 +25,7 @@
     --background-2: #28364b;
     --foreground: #ededed;
     --foreground-1:#d1d5db;
+    --foreground-2:#a8acb1;
 
   }
 }

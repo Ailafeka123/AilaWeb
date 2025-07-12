@@ -43,9 +43,8 @@ export default function Home() {
     <div>
       <main className={`${Style.main}`}>
           <div id="FirstIndex" ref={targetRef} className={`${Style.firstSee}` }>
-            <h1>歡迎來到劉星緯的部落格</h1>
+            <h1 className={` ${Style.FirstIndexH1}  ${isVisible === true? Style.FirstIndexActive:""} `}>歡迎來到劉星緯的部落格</h1>
             <h2>目前還在製作中 預計完成時間為7/15</h2>
-
           </div>
           <div id="secIndex" className={Style.secIndex}>
 

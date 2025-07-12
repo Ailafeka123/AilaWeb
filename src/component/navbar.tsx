@@ -4,8 +4,8 @@ import { useState,useEffect,useRef,ReactElement } from "react";
 import Style from '@/style/navbar.module.scss'
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import Login from "./login";
 
+import Login from "./login";
 import LoginOut from "@/lib/loginOut";
 
 import { Auth } from "@/lib/firebaseAuth";
@@ -181,33 +181,11 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
 
         const unsub =  onAuthStateChanged(Auth,(user)=>{
             if(user){
-                console.log("來自nav提示:登入成功");
-                console.log(`user = `,user);
-                console.log(`user.uid = ${user.uid}`);
                 setUserLogin(true);
                 setLoginDiv(false);
-                (async () =>{
-                    // 讀取是否有創立帳號訊息
-                    const data = await databaseGet("Auth",user.uid);
-                    // 沒有話建立建立
-                    console.log(user.email)
-                    if(data === null){
-                        console.log(`data = ${data}`);
-                        const dataInput = {
-                            id:user.uid,
-                            email:user.email || null,
-                            level:"guest"
-                        }
-                        const result = await databaseSet("Auth",dataInput);
-                        console.log(`result = ${result}`);
-                        console.log(result)
-                    }else{
-                        console.log(data);
-                    }
-                })();
+                
                 
             }else{
-                console.log("來自nav提示:尚未登入");
                 setUserLogin(false);
             }
 
@@ -220,54 +198,41 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         }
     },[])
 
-    // useEffect(()=>{
-    //     console.log(`consent = ${consent}`)
-    //     if(consent === true){
-    //         console.log("已授權 開啟監聽")
-    //         const user = Auth.currentUser;
-    //         console.log(user);
-    //         const unsub =  onAuthStateChanged(Auth,(user)=>{
-    //             if(user){
-    //                 console.log("來自nav提示:登入成功");
-    //                 console.log(`user = `,user);
-    //                 console.log(`user.uid = ${user.uid}`);
-    //                 setUserLogin(true);
-    //                 setLoginDiv(false);
-    //                 (async () =>{
-    //                     // 讀取是否有創立帳號訊息
-    //                     const data = await databaseGet("Auth",user.uid);
-    //                     // 沒有話建立建立
-    //                     console.log(user.email)
-    //                     if(data === null){
-    //                         console.log(`data = ${data}`);
-    //                         const dataInput = {
-    //                             id:user.uid,
-    //                             email:user.email || null,
-    //                             level:"guest"
-    //                         }
-    //                         const result = await databaseSet("Auth",dataInput);
-    //                         console.log(`result = ${result}`);
-    //                         console.log(result)
-    //                     }else{
-    //                         console.log(data);
-    //                     }
-    //                 })();
+    useEffect(()=>{
+        if(consent === true){
+            const user = Auth.currentUser;
+            const unsub =  onAuthStateChanged(Auth,(user)=>{
+                if(user){
+                    setUserLogin(true);
+                    setLoginDiv(false);
+                    (async () =>{
+                        // 讀取是否有創立帳號訊息
+                        const data = await databaseGet("Auth",user.uid);
+                        // 沒有話建立建立
+                        if(data === null){
+                            const dataInput = {
+                                id:user.uid,
+                                email:user.email || null,
+                                level:"guest"
+                            }
+                            const result = await databaseSet("Auth",dataInput);
+                        }
+                    })();
                     
-    //             }else{
-    //                 console.log("來自nav提示:尚未登入");
-    //                 setUserLogin(false);
-    //             }
+                }else{
+                    setUserLogin(false);
+                }
 
-    //         })
-    //         return ()=>{
-    //             unsub();
-    //         }
-    //     }else{
-    //         console.log("失去授權 如果有登入將進行登出")
-    //         const unsub  = onAuthStateChanged(Auth)
+            })
+            return ()=>{
+                unsub();
+            }
+        }else{
+            console.log("失去授權 如果有登入將進行登出")
+            // const unsub  = onAuthStateChanged(Auth)
 
-    //     }
-    // },[consent])
+        }
+    },[consent])
 
     // 排除第一次渲染 當點擊的時候會進行選單的開關
     useEffect(()=>{

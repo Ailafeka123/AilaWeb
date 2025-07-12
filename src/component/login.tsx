@@ -163,13 +163,14 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
 
     }
 
-    const googleLogin = async() =>{
-        if(coldDownCheck.current === true){
-            coldDownCheck.current = false;
-            await signInWithGoogle();
-            coldDownCheck.current = true;
-        }
-    }
+    //  google登入
+    // const googleLogin = async() =>{
+    //     if(coldDownCheck.current === true){
+    //         coldDownCheck.current = false;
+    //         await signInWithGoogle();
+    //         coldDownCheck.current = true;
+    //     }
+    // }
 
     return(
         <div ref={ref} className={Style.loginDiv} >
@@ -215,7 +216,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
                 <div className={Style.errorMessageDiv}>
                     {errorMessage &&<span>{errorMessage}</span>}
                 </div>
-                <span onClick={()=>{googleLogin()}}>google</span>
+                {/* <span onClick={()=>{googleLogin()}}>google</span> */}
                 {/* <a href="https://www.flaticon.com/free-icons/google" title="google icons">Google icons created by Freepik - Flaticon</a> */}
                 {/* <a target="_blank" href="https://icons8.com/icon/17949/google">Google</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a> */}
                 <div className={Style.buttonDiv}>

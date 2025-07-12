@@ -1,0 +1,110 @@
+.main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    min-height: 100vh;
+    background-color: var(--background-2);
+    img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #fff;
+        object-fit: cover;
+        object-position: center;
+    }
+    .hidden{
+        display: none;
+
+    }
+
+    .selfData{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin:16px 0;
+        gap:16px;
+
+        .faceDiv{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            @media(min-width:768px){
+                flex-direction: row;
+            }
+            .disable{
+                color: var(--foreground-2);
+            }
+            .minWord{
+                font-size: 12px;
+            }
+        }
+    }
+    .secProvide{
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        height: 300px;
+        border:var(--foreground) 2px solid;
+        border-radius: 8px;
+        transform: translate(-50%,-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        background-color: var(--background-2);
+        .provide{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            .headerClose{
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                right: 0;
+                top: 0;
+                border-radius: 0px 8px 0px 0px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .error{
+                color: red;
+            }
+        }
+    }
+    input{
+        // background-color: #fff;
+        border: var(--foreground) 2px solid;
+        border-radius: 8px;
+        padding:2px 0 2px 1rem; 
+    }
+    button{
+        width: 250px;
+        border: var(--foreground) 2px solid;
+        border-radius: 8px;
+        padding:8px;
+        background-color: var(--tagcolor);
+        @media(min-width:768px){
+            width: 300px;
+        }
+        &:hover{
+            background-color: var(--tagcolor-1);
+        }
+    }
+}
