@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState,useEffect,useRef,ReactElement } from "react";
 import Style from '@/style/navbar.module.scss'
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 
 import Login from "./login";
 import LoginOut from "@/lib/loginOut";
@@ -28,6 +28,8 @@ type navListItem = {
 export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 抓取Router位置
     const pathname = usePathname();
+    // 轉跳
+    const router = useRouter();
     // 是否有登入測試用
     const [userLogin,setUserLogin] = useState<Boolean>(false);
     // 開啟登入視窗
@@ -178,15 +180,15 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         //     console.log("redirect 登入成功", result.user);
         //     }
         // }).catch(console.error);
-
+        // console.log(`路由:${pathname}`)
         const unsub =  onAuthStateChanged(Auth,(user)=>{
             if(user){
                 setUserLogin(true);
                 setLoginDiv(false);
-                
-                
             }else{
+                // 沒有登入情況 如果再地方進入 會跳回首頁 但目前來說 只要刷新 都會跳回首頁
                 setUserLogin(false);
+                router.push('/');
             }
 
         })

@@ -1,0 +1,143 @@
+.main{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .editerArea{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        overflow-x: scroll;
+        padding:0 8px;
+        .editer{
+            width: 45%;
+            min-width: 300px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            .otherSetDiv{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                select{
+                    background-color: var(--background-2);
+                    padding:8px;
+                    border-radius: 8px;
+                }
+                .changeMode{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 150px;
+                    .silderMove{
+                        position: relative;
+                        display: flex;
+                        background-color: var(--foreground-2);
+                        width: 30px;
+                        height: 16px;
+                        transition: all 0.5s;
+                        border-radius: 8px;
+                        &::before{
+                            content: " ";
+                            position: absolute;
+                            width: 30px;
+                            height: 30px;
+                            top: 50%;
+                            left: 0;
+                            transition: all 0.5s;
+                            transform: translate(-50%,-50%);
+                            background-color: var(--tagcolor);
+                            border-radius: 50%;
+                        }
+                        &.silderMoveCode{
+                            background-color: var(--tagcolor);
+                            &::before{
+                                content: " ";
+                                transform: translate(calc(30px - 50%),-50%);
+                            }
+                        
+                        }
+                    }
+                }
+            }
+            input{
+                border: var(--foreground) 2px solid;
+                border-radius: 8px;
+                padding:4px 16px;
+            }
+            .textareaBox{
+                border: white 2px solid;
+                width: 100%;
+                height: 90vh;
+                overflow: scroll;
+                overflow-x: hidden;
+            }
+        }
+        .show{
+            width: 45%;
+            min-width: 300px;
+            flex-basis: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap:8px;
+            .showDiv{
+                width: 100%;
+                height: 90vh;
+                overflow-y: scroll;
+                .titleDiv{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    h1{
+                        font-size: 24px;
+                    }
+                    .blogTimeDiv{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-around;
+                    }
+                }
+            }
+        }
+    }
+
+    .buttonDiv{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding:16px 0;
+    }
+
+
+    button{
+        width: 250px;
+        border: var(--foreground) 2px solid;
+        border-radius: 8px;
+        padding:8px;
+        background-color: var(--tagcolor);
+        @media(min-width:768px){
+            width: 300px;
+        }
+        &:hover{
+            background-color: var(--tagcolor-1);
+        }
+    }
+}
