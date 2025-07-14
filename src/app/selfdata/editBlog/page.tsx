@@ -9,7 +9,7 @@ import databaseSet from '@/lib/databaseSet';
 import  databaseUpdate  from '@/lib/databaseUpdate';
 
 
-import {useSearchParams} from 'next/navigation';
+// import {useSearchParams} from 'next/navigation';
 
 import { markDownChange } from '@/lib/markDownChange';
 
@@ -34,7 +34,7 @@ const formatter = new Intl.DateTimeFormat('zh-Tw',{
 
 export default function editBlog(){
     // 抓取ID(如果是edit的情況)
-    const searchParams = useSearchParams();
+    // const searchParams = useSearchParams();
     // 資料
     const [editdata , setEditData] = useState<blogData>({
         title:"",
@@ -59,7 +59,7 @@ export default function editBlog(){
             setShowText(newText);
         }
         changeText();
-    },[editdata])
+    },[editdata?.content])
 
     // 初始化 如果有抓到ID 則代表是第二次修改 內容將鎖定
     useEffect(()=>{
@@ -79,13 +79,13 @@ export default function editBlog(){
         })
     },[]);
     // 抓取url
-    useEffect(()=>{
-        const catchId = searchParams.get("id");
-        if(catchId){
-            setEditComplete(true);
-            setBlogId(catchId);
-        }
-    },[searchParams])
+    // useEffect(()=>{
+    //     const catchId = searchParams.get("id");
+    //     if(catchId){
+    //         setEditComplete(true);
+    //         setBlogId(catchId);
+    //     }
+    // },[searchParams])
 
     // 轉換成blog格式
     const NewHtml = () =>{
