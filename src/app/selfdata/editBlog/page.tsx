@@ -8,10 +8,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 import databaseSet from '@/lib/databaseSet';
 import  databaseUpdate  from '@/lib/databaseUpdate';
 
-
-// import {useSearchParams} from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import { markDownChange } from '@/lib/markDownChange';
+
+
 
 type blogData = {
     title:string,
@@ -33,9 +34,8 @@ const formatter = new Intl.DateTimeFormat('zh-Tw',{
 })
 
 export default function editBlog(){
-    // 抓取ID(如果是edit的情況)
-    // const searchParams = useSearchParams();
-    // 資料
+    const searchParams = useSearchParams();
+
     const [editdata , setEditData] = useState<blogData>({
         title:"",
         method:"Blog",
@@ -63,7 +63,12 @@ export default function editBlog(){
 
     // 初始化 如果有抓到ID 則代表是第二次修改 內容將鎖定
     useEffect(()=>{
-        
+        const id = searchParams.get("id");
+        if(id){
+            console.log(`id = ${id}`);
+            setEditComplete(true);
+            setBlogId(id);
+        }
         const unsub = onAuthStateChanged(Auth,(user)=>{
             if(user){
                 setEditData((index)=>{
@@ -78,14 +83,7 @@ export default function editBlog(){
             unsub();
         })
     },[]);
-    // 抓取url
-    // useEffect(()=>{
-    //     const catchId = searchParams.get("id");
-    //     if(catchId){
-    //         setEditComplete(true);
-    //         setBlogId(catchId);
-    //     }
-    // },[searchParams])
+    
 
     // 轉換成blog格式
     const NewHtml = () =>{
