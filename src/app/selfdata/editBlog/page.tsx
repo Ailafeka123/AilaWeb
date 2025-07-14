@@ -63,11 +63,7 @@ export default function editBlog(){
 
     // 初始化 如果有抓到ID 則代表是第二次修改 內容將鎖定
     useEffect(()=>{
-        const catchId = searchParams.get("id");
-        if(catchId){
-            setEditComplete(true);
-            setBlogId(catchId);
-        }
+        
         const unsub = onAuthStateChanged(Auth,(user)=>{
             if(user){
                 setEditData((index)=>{
@@ -82,6 +78,14 @@ export default function editBlog(){
             unsub();
         })
     },[]);
+    // 抓取url
+    useEffect(()=>{
+        const catchId = searchParams.get("id");
+        if(catchId){
+            setEditComplete(true);
+            setBlogId(catchId);
+        }
+    },[searchParams])
 
     // 轉換成blog格式
     const NewHtml = () =>{
