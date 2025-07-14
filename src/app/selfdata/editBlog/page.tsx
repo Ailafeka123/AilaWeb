@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect,Suspense } from 'react';
 import Style from '@/style/editBlog.module.scss';
 
 import { Auth } from '@/lib/firebaseAuth';
@@ -33,8 +33,19 @@ const formatter = new Intl.DateTimeFormat('zh-Tw',{
     hour12:false
 })
 
-export default function editBlog(){
+function SearchId( {onChangeId}: {onChangeId: (id:string) => void} ){
     const searchParams = useSearchParams();
+    const idValue = searchParams.get("id");
+    useEffect(()=>{
+        if(idValue){
+            onChangeId(idValue);
+        }
+    },[searchParams])
+    return <div>{`id : ${idValue}`}</div>
+}
+
+export default function editBlog(){
+    
 
     const [editdata , setEditData] = useState<blogData>({
         title:"",
@@ -63,12 +74,6 @@ export default function editBlog(){
 
     // 初始化 如果有抓到ID 則代表是第二次修改 內容將鎖定
     useEffect(()=>{
-        const id = searchParams.get("id");
-        if(id){
-            console.log(`id = ${id}`);
-            setEditComplete(true);
-            setBlogId(id);
-        }
         const unsub = onAuthStateChanged(Auth,(user)=>{
             if(user){
                 setEditData((index)=>{
@@ -84,7 +89,12 @@ export default function editBlog(){
         })
     },[]);
     
-
+    useEffect(()=>{
+        console.log(`blogId = ${blogId}`)
+        if(blogId){
+            setEditComplete(true);
+        }
+    },[blogId])
     // 轉換成blog格式
     const NewHtml = () =>{
         if(showMode){
@@ -196,7 +206,13 @@ export default function editBlog(){
     <main className={`${Style.main}`}>
         <div className={`${Style.editerArea}`}>
             <div className={`${Style.editer}`}>
-                <h2>編輯markDown</h2>
+                <div>
+                    <h2>編輯markDown</h2>
+                    <Suspense>
+                        <SearchId onChangeId={setBlogId}></SearchId>
+                    </Suspense>
+                </div>
+
                 <div className={`${Style.otherSetDiv}`}>
                     <div>
                         <label>標題:</label>
