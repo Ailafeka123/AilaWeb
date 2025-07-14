@@ -132,7 +132,7 @@ export default function selfdata () {
                         </div>
                     </div>
                     {dataUse.level === "管理者" ? <>
-                        <button type="button" onClick={()=>{router.push("/selfdata/editBlog")}}>編輯文章</button>
+                        <button type="button" onClick={()=>{router.push("/selfdata/BlogList")}}>編輯文章</button>
                         <button type="button" onClick={() =>{router.push('/selfdata/editAuth')}}>編輯帳號</button>
                     </>:null}
                     <button>相關留言</button>
