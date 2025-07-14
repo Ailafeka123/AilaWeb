@@ -5,6 +5,7 @@ import Style from '@/style/editBlog.module.scss';
 
 import { Auth } from '@/lib/firebaseAuth';
 import { onAuthStateChanged } from 'firebase/auth';
+import databaseGet from '@/lib/databaseGet';
 import databaseSet from '@/lib/databaseSet';
 import  databaseUpdate  from '@/lib/databaseUpdate';
 
@@ -21,7 +22,9 @@ type blogData = {
     creatTime:String,
     EditTime:String,
     content:string,
-    complete:boolean
+    complete:boolean,
+    category:string[],
+    searchKey:string[]
 }
 // 轉換日期格式
 const formatter = new Intl.DateTimeFormat('zh-Tw',{
@@ -33,15 +36,24 @@ const formatter = new Intl.DateTimeFormat('zh-Tw',{
     hour12:false
 })
 
-function SearchId( {onChangeId}: {onChangeId: (id:string) => void} ){
+function SearchId( {onChangeId} : { onChangeId : (value:["Blog"|"Project", string]) => void  } ){
     const searchParams = useSearchParams();
     const idValue = searchParams.get("id");
+    const method = searchParams.get("mod")
+    if(method !== "Blog" && method !== "Project"){
+        return;
+    }
     useEffect(()=>{
-        if(idValue){
-            onChangeId(idValue);
+        if(idValue && method){
+            onChangeId([method,idValue]);
         }
     },[searchParams])
-    return <div>{`id : ${idValue}`}</div>
+
+    if(idValue && method){
+        return <div>{`id : ${idValue}`}</div>
+    }else{
+        return <></>
+    }
 }
 
 export default function editBlog(){
@@ -54,7 +66,9 @@ export default function editBlog(){
         creatTime: formatter.format(new Date()),
         EditTime:formatter.format(new Date()),
         content:"",
-        complete:false
+        complete:false,
+        category:[],
+        searchKey:[]
     })
     // 展示成果    
     const [showText,setShowText] = useState<string>("");
@@ -62,7 +76,11 @@ export default function editBlog(){
     const [showMode, setShowMode] = useState<boolean>(false);
     // 是否編輯過 ture = 修改過，有些就不會再上傳
     const [ editComplete, setEditComplete] = useState<boolean>(false);
-    const [blogId , setBlogId] = useState<string>("");
+    // 第一個為method 第二個為id
+    const [blogId , setBlogId] = useState<["Blog"|"Project",string]>(["Blog",""]);
+    // category 設定
+    const [categoryInput, setCategoryInput] = useState<string>("");
+
     // 資料改變的時候 刷新展示內容
     useEffect(()=>{
         const changeText = async() =>{
@@ -72,7 +90,7 @@ export default function editBlog(){
         changeText();
     },[editdata?.content])
 
-    // 初始化 如果有抓到ID 則代表是第二次修改 內容將鎖定
+    // 初始化 抓取Auth的id 
     useEffect(()=>{
         const unsub = onAuthStateChanged(Auth,(user)=>{
             if(user){
@@ -88,15 +106,40 @@ export default function editBlog(){
             unsub();
         })
     },[]);
-    
+    // 讀取參數修改模式 讀取成功的情況並尋找檔案。
     useEffect(()=>{
-        console.log(`blogId = ${blogId}`)
-        if(blogId){
-            setEditComplete(true);
+        if(blogId[0] && blogId[1]){
+            const getDate = async()=>{
+                const data = await databaseGet(blogId[0],blogId[1]);
+                if(data){
+                    setEditData((index)=>{
+                        return({
+                            ...index,
+                            title:data.title,
+                            method:blogId[0],
+                            content:data.content,
+                            creatTime:data.creatTime,
+                        })
+                    })
+                    setEditComplete(true);
+                }
+            }
+            getDate();
         }
     },[blogId])
+
+    const creatSearchFunction = ():string[] =>{
+        const newString = [...editdata.category,editdata.title].join(" ");
+        const newSearchKey = newString.toLowerCase().split(/[\s,.;]+/);
+        return newSearchKey;
+    }
+
+
     // 轉換成blog格式
     const NewHtml = () =>{
+        const categoryString =  editdata.category.map((index,key)=>{
+            return(<span key = {key}>{index}</span>);
+        })
         if(showMode){
             return(
                 <article className={Style.showDiv}>
@@ -110,6 +153,7 @@ export default function editBlog(){
                     <section>
                         <div dangerouslySetInnerHTML={{ __html: showText }} className={Style.showDiv} />
                     </section>
+                    <div>{categoryString}</div>
                 </article>
             )
 
@@ -126,9 +170,33 @@ export default function editBlog(){
                 <section>
                     {showText}
                 </section>
+                <div>分類:{categoryString}</div>
             </article>
         )
     }
+    // 展示分類List
+    const CategoryListDivShow = () =>{
+        const categoryList = editdata.category.map((index,key)=>{
+            return(<span key = {key} onClick={(e)=>{
+                const newList : string[] = editdata.category;
+                newList.splice(key,1);
+                setEditData(index=>{
+                    return({
+                        ...index,
+                        category:newList,
+                    });
+                });
+            }}>{index}</span>)
+        })
+        return(
+        <div className={Style.categoryListDiv}>
+            {categoryList}
+        </div>)
+    }
+
+
+
+
     // 確定是為空的
     const checkData = ():boolean =>{
         let title = editdata.title;
@@ -155,14 +223,16 @@ export default function editBlog(){
         if(check === false){
             return;
         }
-
+        const SearchKeyIndex :string[] = creatSearchFunction();
         if(editComplete){
             const inputData = {
                 editTime:formatter.format(new Date()),
                 content:editdata.content,
-                complete:true
+                complete:true,
+                category:editdata.category,
+                searchKey:SearchKeyIndex
             }
-            databaseUpdate(editdata.method, blogId, inputData);
+            databaseUpdate(editdata.method, blogId[1], inputData);
         }else{
             const inputData = {
                 title:editdata.title,
@@ -170,7 +240,9 @@ export default function editBlog(){
                 creatTime:formatter.format(new Date()),
                 editTime:formatter.format(new Date()),
                 content:editdata.content,
-                complete:true
+                complete:true,
+                category:editdata.category,
+                searchKey:SearchKeyIndex
             }
             databaseSet(editdata.method, inputData);
         }
@@ -182,13 +254,16 @@ export default function editBlog(){
         if(check === false){
             return;
         }
+        const SearchKeyIndex :string[] = creatSearchFunction();
         if(editComplete){
             const inputData = {
                 editTime:formatter.format(new Date()),
                 content:editdata.content,
-                complete:false
+                complete:false,
+                category:editdata.category,
+                searchKey:SearchKeyIndex
             }
-            databaseUpdate(editdata.method, blogId, inputData);
+            databaseUpdate(editdata.method, blogId[1], inputData);
         }else{
             const inputData = {
                 title:editdata.title,
@@ -196,7 +271,9 @@ export default function editBlog(){
                 creatTime:formatter.format(new Date()),
                 editTime:formatter.format(new Date()),
                 content:editdata.content,
-                complete:false
+                complete:false,
+                category:editdata.category,
+                searchKey:SearchKeyIndex
             }
             databaseSet(editdata.method, inputData);
         }
@@ -206,7 +283,7 @@ export default function editBlog(){
     <main className={`${Style.main}`}>
         <div className={`${Style.editerArea}`}>
             <div className={`${Style.editer}`}>
-                <div>
+                <div className={Style.headerSet}>
                     <h2>編輯markDown</h2>
                     <Suspense>
                         <SearchId onChangeId={setBlogId}></SearchId>
@@ -216,7 +293,7 @@ export default function editBlog(){
                 <div className={`${Style.otherSetDiv}`}>
                     <div>
                         <label>標題:</label>
-                        <input onChange={(e)=>{setEditData((index)=>{
+                        <input disabled={editComplete} value={editdata.title} onChange={(e)=>{setEditData((index)=>{
                             return({
                                 ...index,
                                 title:e.target.value,
@@ -241,7 +318,7 @@ export default function editBlog(){
                     </div>
                 </div>
                 
-                <textarea className={`${Style.textareaBox}`} onChange={(e)=>{
+                <textarea className={`${Style.textareaBox}`} value={editdata.content} onChange={(e)=>{
                     setEditData((index)=>{
                         return({
                             ...index,
@@ -249,6 +326,23 @@ export default function editBlog(){
                         })
                     })
                     }}></textarea>
+                <CategoryListDivShow/>
+                <div className={`${Style.categoryDiv}`}>
+                    <label>category:</label>
+                    <input type="text" value={categoryInput} onChange={(e)=>{
+                        setCategoryInput(e.target.value);
+                    }}></input>
+                    <button type='button' onClick={()=>{
+                        const categoryList : string[] = editdata.category;
+                        categoryList.push(categoryInput);
+                        setEditData((index)=>{
+                            return({
+                                ...index,
+                                category:categoryList,
+                            })
+                        })
+                        setCategoryInput("")}}>送出種類</button>
+                </div>
             </div>
             <div className={`${Style.show}`}>
                 <h2>展示結果</h2>
@@ -259,6 +353,7 @@ export default function editBlog(){
             <button type = 'button' onClick={()=>{createBlog()}}>提交</button>
             <button type = "button" onClick={()=>{saveBlog()}}>儲存</button>
         </div>
-    </main>)
+    </main>
+    )
     
 }

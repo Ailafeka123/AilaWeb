@@ -7,13 +7,12 @@
     justify-content: center;
     .editerArea{
         width: 100vw;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: start;
         justify-content: center;
-        overflow-x: scroll;
-        padding:0 8px;
+        padding:16px 8px;
         .editer{
             width: 45%;
             min-width: 300px;
@@ -22,7 +21,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            padding:16px;
+            gap: 8px;
+            .headerSet{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+            }
             .otherSetDiv{
                 width: 100%;
                 display: flex;
@@ -32,6 +39,10 @@
                     background-color: var(--background-2);
                     padding:8px;
                     border-radius: 8px;
+                    &:disabled{
+                        appearance: none;
+                        background-color: var(--background);
+                    }
                 }
                 .changeMode{
                     display: flex;
@@ -73,13 +84,39 @@
                 border: var(--foreground) 2px solid;
                 border-radius: 8px;
                 padding:4px 16px;
+                &:disabled{
+                    border: none;
+                }
             }
             .textareaBox{
                 border: white 2px solid;
                 width: 100%;
                 height: 90vh;
-                overflow: scroll;
                 overflow-x: hidden;
+            }
+            .categoryListDiv{
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-items: center;
+                justify-content: start;
+                width: 100%;
+                gap: 1rem;
+                span{
+                    background-color: var(--background-1);
+                    border-radius: 8px;
+                    padding: 4px 8px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: var(--background-2);
+                    }
+                }
+            }
+            .categoryDiv{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
             }
         }
         .show{
@@ -95,7 +132,6 @@
             .showDiv{
                 width: 100%;
                 height: 90vh;
-                overflow-y: scroll;
                 .titleDiv{
                     display: flex;
                     flex-direction: column;
