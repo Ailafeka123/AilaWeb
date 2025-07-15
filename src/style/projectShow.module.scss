@@ -1,0 +1,63 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    min-height: 100vh;
+    padding:32px 16px;
+
+    .article{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        .header{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: center;
+            background-color: var(--background-1);
+            padding:16px;
+            gap: 16px;
+            .projectTitle{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                h1{
+                    font-size: 32px;
+                }
+                .timeDiv{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: start;
+                    justify-content: start;
+                }
+            }
+            
+            .categoryList{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: start;
+            }
+        }
+        .section{
+            width: 100%;
+            display: flex;
+            min-height: 200px;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            background-color: var(--background-2);
+            padding:16px;
+            h2{
+                font-size: 24px;
+            }
+        }
+    }
+}

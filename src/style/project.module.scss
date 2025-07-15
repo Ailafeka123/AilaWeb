@@ -1,0 +1,67 @@
+.main{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding:32px 16px ;
+    .searchDiv{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 16px;
+        input{
+            border: var(--foreground) 2px solid;
+            border-radius: 8px;
+            padding:8px 0px 8px 16px;
+        }
+        button{
+            background-color: var(--tagcolor);
+            border-radius: 8px;
+            padding:8px 8px;
+            &:hover{
+                background-color: var(--tagcolor-1);
+                cursor: pointer;
+            }
+        }
+    }
+
+    .article{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        .cardDiv{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--background-2);
+            padding:16px;
+            gap: 16px;
+            .card{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                background-color: var(--background-1);
+                padding:8px 16px;
+                border-radius: 8px;
+                h2{
+                    font-size: 32px;
+                }
+                &:hover{
+                    background-color: var(--background);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

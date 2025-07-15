@@ -2,6 +2,7 @@
 
 import { useState, useEffect,Suspense } from 'react';
 import Style from '@/style/editBlog.module.scss';
+import { useRouter } from 'next/navigation';
 
 import { Auth } from '@/lib/firebaseAuth';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -57,7 +58,7 @@ function SearchId( {onChangeId} : { onChangeId : (value:["Blog"|"Project", strin
 }
 
 export default function editBlog(){
-    
+    const router = useRouter();
 
     const [editdata , setEditData] = useState<blogData>({
         title:"",
@@ -221,31 +222,48 @@ export default function editBlog(){
     const createBlog = () =>{
         const check = checkData();
         if(check === false){
+            console.error("check 為否")
             return;
         }
-        const SearchKeyIndex :string[] = creatSearchFunction();
-        if(editComplete){
-            const inputData = {
-                editTime:formatter.format(new Date()),
-                content:editdata.content,
-                complete:true,
-                category:editdata.category,
-                searchKey:SearchKeyIndex
+        const pushData = async()=>{
+            const SearchKeyIndex :string[] = creatSearchFunction();
+            if(editComplete){
+                const inputData = {
+                    editTime:formatter.format(new Date()),
+                    content:editdata.content,
+                    complete:true,
+                    category:editdata.category,
+                    searchKey:SearchKeyIndex
+                }
+                try{
+                    await databaseUpdate(editdata.method, blogId[1], inputData);
+                    router.push(`/selfdata/BlogList`);
+                }catch(e){
+                    console.error(e)
+                    console.log("更新錯誤")
+                }
+            }else{
+                const inputData = {
+                    title:editdata.title,
+                    userId:editdata.userID,
+                    creatTime:formatter.format(new Date()),
+                    editTime:formatter.format(new Date()),
+                    content:editdata.content,
+                    complete:true,
+                    category:editdata.category,
+                    searchKey:SearchKeyIndex
+                }
+                try{
+                    await databaseSet(editdata.method, inputData);
+                    router.push(`/selfdata/BlogList`);
+                }catch(e){
+                    console.error(e);
+                    console.log("更新失敗")
+                }
             }
-            databaseUpdate(editdata.method, blogId[1], inputData);
-        }else{
-            const inputData = {
-                title:editdata.title,
-                userId:editdata.userID,
-                creatTime:formatter.format(new Date()),
-                editTime:formatter.format(new Date()),
-                content:editdata.content,
-                complete:true,
-                category:editdata.category,
-                searchKey:SearchKeyIndex
-            }
-            databaseSet(editdata.method, inputData);
+
         }
+        pushData();
         
     }
     // 保存
@@ -254,29 +272,46 @@ export default function editBlog(){
         if(check === false){
             return;
         }
-        const SearchKeyIndex :string[] = creatSearchFunction();
-        if(editComplete){
-            const inputData = {
-                editTime:formatter.format(new Date()),
-                content:editdata.content,
-                complete:false,
-                category:editdata.category,
-                searchKey:SearchKeyIndex
+        const pushData = async() =>{
+             const SearchKeyIndex :string[] = creatSearchFunction();
+            if(editComplete){
+                const inputData = {
+                    editTime:formatter.format(new Date()),
+                    content:editdata.content,
+                    complete:false,
+                    category:editdata.category,
+                    searchKey:SearchKeyIndex
+                }
+                try{
+                    await databaseUpdate(editdata.method, blogId[1], inputData);
+                    router.push(`/selfdata/BlogList`);
+                }catch(e){
+                    console.error(e);
+                    console.log("更新錯誤")
+                }
+            }else{
+                const inputData = {
+                    title:editdata.title,
+                    userId:editdata.userID,
+                    creatTime:formatter.format(new Date()),
+                    editTime:formatter.format(new Date()),
+                    content:editdata.content,
+                    complete:false,
+                    category:editdata.category,
+                    searchKey:SearchKeyIndex
+                }
+                try{
+                    await databaseSet(editdata.method, inputData);
+                    router.push(`/selfdata/BlogList`);
+                }catch(e){
+                    console.error(e);
+                    console.log("更新錯誤")
+                } 
+
             }
-            databaseUpdate(editdata.method, blogId[1], inputData);
-        }else{
-            const inputData = {
-                title:editdata.title,
-                userId:editdata.userID,
-                creatTime:formatter.format(new Date()),
-                editTime:formatter.format(new Date()),
-                content:editdata.content,
-                complete:false,
-                category:editdata.category,
-                searchKey:SearchKeyIndex
-            }
-            databaseSet(editdata.method, inputData);
         }
+        pushData();
+       
     }
 
     return(

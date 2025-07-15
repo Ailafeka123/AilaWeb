@@ -41,6 +41,7 @@ export async function databaseGetAll(method:string,searchKey:string,orderName:"c
                 userId:data.userId,
                 category:data.category,
                 creatTime:data.creatTime,
+                editTime:data.editTime,
                 complete:data.complete
             };
             dataGetAll.push(getData);

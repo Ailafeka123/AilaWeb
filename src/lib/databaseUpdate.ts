@@ -12,7 +12,7 @@ type updateData = {
     "BlogAnsMessage":{blogId:string,userId:string,editTime:string,content:string}
 }
 
-export default async function databaseUpdate<K extends updateMode>(mod:K, id:string, data:updateData[K]){
+export default async function databaseUpdate<K extends updateMode>(mod:K, id:string, data:updateData[K]):Promise<boolean>{
     console.log("data這邊接收到了")
     console.log(`mod = ${mod}`);
     console.log(`id = ${id}`);
@@ -20,8 +20,10 @@ export default async function databaseUpdate<K extends updateMode>(mod:K, id:str
     try{
         await updateDoc(doc(db,mod,id),data);
         console.log("更新成功");
+        return true;
     }catch(e){
         console.error(e);
+        return false;
     }
 
 }
