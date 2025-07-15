@@ -20,22 +20,25 @@
             border-radius: 8px;
             padding:8px 16px;
             &:hover{
-                background-color: var(--tagcolor-1);
+                background-color: var(--tagcolor-2);
             }
         }
     }
     .article{
-        width: 100%;
+        width: 90%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: start;
+        
         .cardTitle{
             width: 100%;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-around;
+            background-color: var(--background-3);
+            border-radius: 8px 8px 0 0;
             span{
                 width: 150px;
                 text-align: center;
@@ -44,6 +47,8 @@
         }
         .cardShowDiv{
             width:100%;
+            background-color: var(--background-2);
+            border-radius: 0px 0px 8px 8px;
             .card{
                 width: 100%;
                 display: flex;
@@ -52,6 +57,7 @@
                 align-items: center;
                 justify-content: space-around;
                 padding: 8px 0;
+                
                 span{
                     width: 150px;
                     text-align: center;
@@ -69,7 +75,14 @@
                     border-radius: 8px;
                     padding:8px 16px;
                     &:hover{
-                        background-color: var(--tagcolor-1);
+                        cursor: pointer;
+                        background-color: var(--tagcolor-2);
+                    }
+                }
+                .errorButton{
+                    background-color: var(--error);
+                    &:hover{
+                     background-color: var(--error-2);
                     }
                 }
             }

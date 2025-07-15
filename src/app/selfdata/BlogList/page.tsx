@@ -58,7 +58,6 @@ export default function BlogList(){
 
         if(searchUse){
             const changeTolowerString = searchInput.toLowerCase().trim();
-            console.timeLog(`changeTolowerString = ${changeTolowerString}`);
             if(changeTolowerString === ""){
                 setSearchText("全部");
             }else{
@@ -89,16 +88,17 @@ export default function BlogList(){
 
     const ShowDataList = () =>{
         const DataList = getData.map((index,key)=>{
+            let categoryList = index.category.join(",");
             return(
                 <div id={index.id} key={key} className={Style.card}>
                     <span>{index.title}</span>
                     <span>{index.method}</span>
-                    <span>{index.category}</span>
+                    <span>{categoryList}</span>
                     <span>{index.creatTime}</span>
                     <span>{index.complete?"是":"否"}</span>
                     <div className={Style.cardEditDiv}>
                         <button type="button" onClick={()=>{router.push(`/selfdata/editBlog?id=${index.id}&mod=${index.method}`)}} >修正</button>
-                        <button type="button" >刪除</button>
+                        <button type="button" className={Style.errorButton} >刪除</button>
                     </div>
                 </div>
             )
@@ -112,7 +112,7 @@ export default function BlogList(){
 
     return(
     <main className={`${Style.main}`}>
-        <h2>這裡是編輯區</h2>
+            <h2>{searchText!==""&&`當前搜尋:${searchText}`}</h2>
         <div>
             <search className={`${Style.search}`}>
                 <label > 搜尋:</label>
@@ -127,7 +127,7 @@ export default function BlogList(){
             </search>
         </div>
         <article className={Style.article}>
-            <h2>{searchText!==""&&`當前搜尋:${searchText}`}</h2>
+            
             <div className={Style.cardTitle}>
                 <span>標題</span>
                 <span>類型</span>

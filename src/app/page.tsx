@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Style from '@/style/index.module.scss';
 import { useState,useEffect,useRef } from "react";
 export default function Home() {
@@ -44,7 +43,7 @@ export default function Home() {
       <main className={`${Style.main}`}>
           <div id="FirstIndex" ref={targetRef} className={`${Style.firstSee}` }>
             <h1 className={` ${Style.FirstIndexH1}  ${isVisible === true? Style.FirstIndexActive:""} `}>歡迎來到劉星緯的部落格</h1>
-            <h2>目前還在製作中 預計完成時間為7/15</h2>
+            <h2>目前還在製作中 預計完成時間為7/16</h2>
           </div>
           <div id="secIndex" className={Style.secIndex}>
 

@@ -120,6 +120,7 @@ export default function editBlog(){
                             method:blogId[0],
                             content:data.content,
                             creatTime:data.creatTime,
+                            category:data.category,
                         })
                     })
                     setEditComplete(true);

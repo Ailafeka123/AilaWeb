@@ -1,14 +1,24 @@
 @import "tailwindcss";
-
+/* lime,slate ,cyan*/
 :root {
-  --background: #ffffff;
-  --background-1:#d1d5db;
-  --background-2:#a8acb1;
-  --foreground: #171717;
-  --foreground-1:#1e2939;
-  --foreground-2:#28364b;
-  --tagcolor:rgb(127, 197, 197);
-  --tagcolor-1:rgb(76, 122, 122);
+  --background: oklch(98.6% 0.031 120.757);
+  --background-1:oklch(96.7% 0.067 122.328);
+  --background-2:oklch(93.8% 0.127 124.321);
+  --background-3:oklch(89.7% 0.196 126.665);
+  --background-4:oklch(84.1% 0.238 128.85);
+  --foreground: oklch(12.9% 0.042 264.695);
+  --foreground-1:oklch(20.8% 0.042 265.755);
+  --foreground-2:oklch(27.9% 0.041 260.031);
+  --foreground-3:oklch(37.2% 0.044 257.287);
+  --foreground-4:oklch(44.6% 0.043 257.281);
+  --error:oklch(64.5% 0.246 16.439);
+  --error-1:oklch(58.6% 0.253 17.585);
+  --error-2:oklch(51.4% 0.222 16.935);
+  --tagcolor:oklch(78.9% 0.154 211.53);
+  --tagcolor-1:oklch(71.5% 0.143 215.221);
+  --tagcolor-2:oklch(60.9% 0.126 221.723);
+  --tagcolor-3:oklch(52% 0.105 223.128);
+  --tagcolor-4:oklch(45% 0.085 224.283);
 }
 
 @theme inline {
@@ -20,13 +30,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #171717;
-    --background-1: #1e2939;
-    --background-2: #28364b;
-    --foreground: #ededed;
-    --foreground-1:#d1d5db;
-    --foreground-2:#a8acb1;
-
+    --background: oklch(12.9% 0.042 264.695);
+    --background-1: oklch(20.8% 0.042 265.755);
+    --background-2: oklch(27.9% 0.041 260.031);
+    --background-3:oklch(37.2% 0.044 257.287);
+    --background-4:oklch(44.6% 0.043 257.281);
+    --foreground: oklch(98.6% 0.031 120.757);
+    --foreground-1:oklch(96.7% 0.067 122.328);
+    --foreground-2:oklch(93.8% 0.127 124.321);
+    --foreground-3:oklch(89.7% 0.196 126.665);
+    --foreground-4:oklch(84.1% 0.238 128.85);
   }
 }
 
@@ -39,5 +52,13 @@ body {
   font-size: 1rem;
   main{
     margin-top: 80px;
+    
   }
 }
+h1{
+  font-size: 32px;
+}
+h2{
+  font-size: 24px;
+}
+

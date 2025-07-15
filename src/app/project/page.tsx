@@ -109,7 +109,6 @@ export default function Project(){
             </search>
             <article className={Style.article}>
                 <div className={Style.cardTitle}>
-
                 </div>
                 <ShowDataList/>
             </article>
