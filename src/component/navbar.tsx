@@ -77,6 +77,11 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 是否使用Cookies
     const {consent, setConsent} = useCookieConsent();
 
+    // 是否為暗色模式
+    const [darkMode,setDarkMode] = useState(false);
+
+
+
     // 關閉nav功能
     const closeNav = () =>{
         // 關閉所有複選單
@@ -150,8 +155,13 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                 },100)
             }
         }
-
-
+        // 抓取是否為暗色模式 是的話就在body加上dark
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        if (media.matches) {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
         // 更新初始寬度
         lastSizeWidth.current = window.innerWidth;
         // 監聽寬度變化，確認是否要關閉nav
@@ -163,24 +173,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         
         // 確保符合nav長度 避免後續忘記修正
         let navArray = Array(navList.current.length).fill(false);
-        setNavListActive(navArray); 
-        // 判斷是否登入 登入會把loginDiv關掉
-        // 確認是否有抓到轉跳訊息 由於時間問題  採用signInWithPopup 暫不使用signInWithRedirect
-        // getRedirectResult(Auth).then(result => {
-        //     if(result !== null){
-        //         const credential = GoogleAuthProvider.credentialFromResult(result);
-        //         if(credential !== null){
-        //             const token = credential.accessToken;
-        //         }
-        //         const user = result.user;
-        //     }
-        //     console.log("進行檢查  是否有在讀取auth")
-        //     console.log(`result = ${result}`);
-        //     if (result?.user) {
-        //     console.log("redirect 登入成功", result.user);
-        //     }
-        // }).catch(console.error);
-        // console.log(`路由:${pathname}`)
+        setNavListActive(navArray);
         const unsub =  onAuthStateChanged(Auth,(user)=>{
             if(user){
                 setUserLogin(true);
@@ -199,6 +192,16 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             unsub();
         }
     },[])
+    // 暗色模式切換
+    useEffect(()=>{
+        if(darkMode){
+            document.body.classList.add("dark");
+        }else{
+            document.body.classList.remove("dark");
+        }
+    },[darkMode])
+
+
 
     useEffect(()=>{
         if(consent === true){
@@ -344,7 +347,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             <header ref={headerDiv} id="header" className={`${Style.header} ${scrollMove === true? Style.headerHidden:""} ` }>
                 <div className={`${Style.menu}`}>
                     <Link href={`/`}>
-                        <Image src="/selficon.svg" alt="icon" width={40} height={40} priority ></Image>
+                        <Image src={darkMode?"/selficon_light.svg":"/selficon.svg"} alt="icon" width={40} height={40} priority ></Image>
                     </Link>
                     <button onClick={(e)=>{
                         if(navBoolean.current === false){

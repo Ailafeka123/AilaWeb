@@ -37,8 +37,8 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
     setConsent(value);
     localStorage.setItem("cookieConsent", value ? "true" : "false");
     const newTime = Date.now();
-    // 一小時
-    const AddTime = 1000*60*60;
+    // 一天
+    const AddTime = 1000*60*60*24;
     const DeadTime:number = newTime + AddTime;
     localStorage.setItem("cookieConsentDeadTime", DeadTime.toString());
   };
