@@ -22,14 +22,66 @@
         @media(prefers-color-scheme: dark){
             background-image:url("/index/firstBG.jpg")
         }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         .FirstIndexH1{
-            transform: translateX(-100vw);
             transition: all 1s;
+            transform: translateX(-100vw);
+            padding: 0 16px;
+            h1{
+                text-align: center;
+            }
+            .firstSelfText{
+                position: relative;
+                text-align: center;
+                &::after{
+                    content: "";
+                    text-align: center;
+                    border: 2px var(--foreground) solid;
+                    border-width: 0 2px 0 0;
+                    animation: blink 1s step-start infinite;
+                }
+                @media(min-width: 768px){
+                    font-size: 24px;
+                }
+                
+            }
+        
         }
         .FirstIndexActive{
-            transform: translateX(0);
+            transform:  translateX(0);
         }
     }
     
+    .aboutDiv{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        background-color: var(--background-1);
+        min-height: 100vh;
+        .aboutMeDiv{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 100px;
+            padding:16px 0;
+            // background-color: var(--background);
+            @media(min-width: 768px){
+                width: 768px;
+            }
+            .headImg{
+                object-position: center;
+                object-fit: cover;
+                border-radius: 50%;
+                height: 200px;
+                width: 200px;
+            }
 
+        }
+    }
 }

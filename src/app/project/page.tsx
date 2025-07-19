@@ -76,7 +76,7 @@ export default function Project(){
                 }}>
                     <div>
                         <h2>{index.title}</h2>
-                        <div>
+                        <div className={Style.categoryDiv}>
                             <span>分類:</span>
                             {index.category.map((categoryIndex,categoryKey)=>{
                                 return (
@@ -86,7 +86,7 @@ export default function Project(){
                             })}
                         </div>
                     </div>
-                    <div>
+                    <div className={Style.timeDiv}>
                         <span>最後編輯時間:{index.editTime}</span>
                     </div>
                 </div>

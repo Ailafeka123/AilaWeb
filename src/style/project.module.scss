@@ -8,15 +8,18 @@
     padding:32px 16px ;
     .searchDiv{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         width: 100%;
         gap: 16px;
+        @media(min-width:768px){
+            flex-direction: row;
+        }
         input{
             border: var(--foreground) 2px solid;
             border-radius: 8px;
-            padding:8px 0px 8px 16px;
+            padding:8px 4px 8px 16px;
         }
         button{
             background-color: var(--tagcolor);
@@ -48,18 +51,58 @@
             .card{
                 width: 100%;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
+                gap: 16px;
                 background-color: var(--background-1);
                 padding:8px 16px;
                 border-radius: 8px;
-                h2{
-                    font-size: 32px;
-                }
+                // transition: backgound 0.2s;
                 &:hover{
                     background-color: var(--background);
                     cursor: pointer;
+                }
+                @media( min-width: 768px){
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
+                div{
+                    width: auto;
+                }
+                h2{
+                    font-size: 32px;
+                    padding: 16px 0;
+                    text-align: center;
+                    @media(min-width: 768px){
+                        text-align: left;
+                        padding:16px 8px
+                    }
+                }
+                .categoryDiv{
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 16px;
+                    @media(min-width:768px){
+                        justify-content: start;
+                    }
+                    span{
+                        background-color: var(--background-2);
+                        border-radius: 8px;
+                        padding: 4px 8px;
+                        &:first-of-type{
+                            background-color: var(--background-1);
+                        }
+                    }
+                }
+                .timeDiv{
+                    text-align: center;
+                    @media(min-width:768px){
+                        text-align: right;
+                    }
                 }
             }
         }

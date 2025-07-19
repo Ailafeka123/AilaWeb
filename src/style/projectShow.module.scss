@@ -25,25 +25,39 @@
             .projectTitle{
                 width: 100%;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
-                h1{
-                    font-size: 32px;
-                }
                 .timeDiv{
                     display: flex;
                     flex-direction: column;
                     align-items: start;
                     justify-content: start;
                 }
+                @media(min-width: 768px){
+                    flex-direction: row;
+                    .timeDiv{
+                        width: auto;
+                    }
+                }
             }
             
             .categoryList{
                 display: flex;
+                flex-wrap: wrap;
                 flex-direction: row;
                 align-items: center;
                 justify-content: start;
+                gap: 16px;
+                
+                span{
+                    background-color: var(--background-2);
+                    border-radius:  8px;
+                    padding: 4px 8px  ;
+                    &:nth-child(1){
+                        background-color: var(--background-1);
+                    }
+                }
             }
         }
         .section{

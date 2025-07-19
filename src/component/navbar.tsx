@@ -18,11 +18,15 @@ import { useCookieConsent } from "@/lib/cookiesCheckContext";
 type navbarProps = {
     hiddenHeight ?: number;
 }
+type childListItem = {
+    title:string,
+    hash:string,
+}
 // 設定nav裡面的內容與連結
 type navListItem = {
     title : string;
     href : string;
-    children ?: navListItem[];
+    children ?: childListItem[];
 }
 
 export default function Navbar({hiddenHeight = 500}:navbarProps){
@@ -46,7 +50,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     const reSizeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
     // 上一次畫面寬度
     const lastSizeWidth = useRef<number|null>(null);
-    // 防止點擊關閉重複觸發
+    // 防止點擊關閉重複觸發 由於監聽 不用的話會抓不到navOpen
     const clickCloseNav = useRef<Boolean>(false);
 
     // 針對滾動的縮放參數
@@ -61,10 +65,10 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     const [navListActive,setNavListActive] = useState<Boolean[]>([false,false,false,false])
     const navList = useRef<navListItem[]>([
         {title:"首頁", href:"/", children:[
-            {title:"前言", href:"/#firstIndex"},
-            {title:"個人介紹", href:"/#secIndex"},
-            {title:"最新作品", href:"/#triIndex"},
-            {title:"最新文章",href:"/"}
+            {title:"前言", hash:"firstIndex"},
+            {title:"個人介紹", hash:"secIndex"},
+            {title:"最新作品", hash:"triIndex"},
+            {title:"最新文章",hash:""}
         ]},
         {title:"作品集", href:"/project"},
         {title:"文章",href:"/blogdata"},
@@ -77,57 +81,57 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 是否使用Cookies
     const {consent, setConsent} = useCookieConsent();
 
-    // 是否為暗色模式
+    // 是否為暗色模式 
     const [darkMode,setDarkMode] = useState(false);
 
-
-
-    // 關閉nav功能
-    const closeNav = () =>{
-        // 關閉所有複選單
-        const newArray = Array(navList.current.length).fill(false);
-        setNavListActive(newArray);
-        // 關閉主選單
-        setNavOpen(false);
-        navBoolean.current =true;
-        setTimeout(()=>{
-            navBoolean.current = false;
-        },300)
+    // 開關nav功能
+    const navButtonFunction = (click:boolean) =>{
+        if(navBoolean.current === false && clickCloseNav.current !== click){
+            setNavOpen(click);
+            navBoolean.current = true;
+            let navArray = Array(navList.current.length).fill(false);
+            setNavListActive(navArray);
+        }
     }
-
-    
-    
-    
     // 點擊非header的情況 關閉nav
     const clickOutside = (e :PointerEvent) =>{
+        // 前兩者避免null 後面兩個條件 點擊外面 = false , clickCloseNav true = 開啟中
+        if(e.target instanceof Node){
+            console.log(`是否點擊外部 = ${headerDiv.current?.contains(e.target)}`)
+        }
         if(headerDiv.current && e.target instanceof Node && !headerDiv.current.contains(e.target)  && clickCloseNav.current === true){
-            if(navBoolean.current === false){
-                navBoolean.current = true;
-                setNavOpen(false);
-                let navArray = Array(navList.current.length).fill(false);
-                setNavListActive(navArray);
-                setTimeout(() => {
-                    navBoolean.current = false;
-                }, 300);
-            }
+            navButtonFunction(false);
         }
     }
+    // 如果是同一頁 則滑動 如果不是則轉跳至最頂
+    const routerTo = (routerHref:string,hashString:string = "") =>{
+        if(pathname === routerHref){
+            if(hashString === ""){
+                window.scrollTo({top:0,behavior:"smooth"})
+            }else{
+                const idPosition = document.getElementById(hashString);
+                if(idPosition){
+                    const willMoveY = idPosition.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({ top: willMoveY, behavior: "smooth" });
+                }
+            }
+            console.log("進行smooth");
+        }else{
+            if(hashString === ""){
+                router.push(routerHref);
+                window.scrollTo({
+                    top:0,
+                    behavior:"smooth",
+                });
+            }else{
+                router.push(`${routerHref}#${hashString}`);
+            }
+        }
+        navButtonFunction(false);
+    }
+
     // 初始化設定 抓取寬度 開啟對於寬度與滾動的監聽事件
     useEffect(()=>{
-        // 監聽寬度變化 防抖設定 由於vercal 回報window not defined 移入useEffect
-        const reSizeFunction = () =>{
-            if(reSizeTimeout.current) clearTimeout(reSizeTimeout.current);
-            reSizeTimeout.current = setTimeout(()=>{
-                // 新的寬度為電腦寬 且 舊的是手機寬 則關閉nav開啟
-                if(window.innerWidth > 768){
-                    if(lastSizeWidth.current !== null && lastSizeWidth.current < 768){
-                        closeNav();
-                    }
-                }
-                // 更新寬度 用於下次確認
-                lastSizeWidth.current = window.innerWidth;
-            },100);
-        }
         // nav滾動收回功能 由於vercal 回報window not defined 移入useEffect   
         const scrollCloseNav = () =>{
             // 如果準備判斷 則重製時間
@@ -164,8 +168,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         }
         // 更新初始寬度
         lastSizeWidth.current = window.innerWidth;
-        // 監聽寬度變化，確認是否要關閉nav
-        window.addEventListener("resize",reSizeFunction);
         // navBar收回功能 在第一個視窗內的話 強制顯示 如果是超出之下，則下滑時收回 上滑時顯示
         window.addEventListener("scroll",scrollCloseNav);
         // 監聽點擊 點擊非nav的情況  關閉選單
@@ -186,7 +188,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
 
         })
         return () =>{
-            window.removeEventListener("resize",reSizeFunction);
             window.removeEventListener("scroll",scrollCloseNav);
             document.removeEventListener("pointerdown",clickOutside);
             unsub();
@@ -232,28 +233,18 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             return ()=>{
                 unsub();
             }
-        }else{
-            console.log("失去授權 如果有登入將進行登出")
-            // const unsub  = onAuthStateChanged(Auth)
-
         }
     },[consent])
 
     // 排除第一次渲染 當點擊的時候會進行選單的開關
     useEffect(()=>{
         if(navBoolean.current === true){
-            const nav = document.getElementById("HeaderNav");
-            const navButtonIcon = document.getElementById("menuButtonIcon");
             if(navOpen === true){
-                nav?.classList.add(Style.navOpen);
-                navButtonIcon?.classList.add(Style.navIconOpen);
                 clickCloseNav.current = true;
                 setTimeout(()=>{
                     navBoolean.current = false;
                 },300)
             }else{
-                nav?.classList.remove(Style.navOpen);
-                navButtonIcon?.classList.remove(Style.navIconOpen);
                 clickCloseNav.current = false;
                 setTimeout(()=>{
                     navBoolean.current = false;
@@ -265,57 +256,53 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 顯示navListShow的部分 
     const NavListShow = () =>{
         let temp : ReactElement[] = [];
-        
         for(const [key,index] of navList.current.entries()){
             let childTemp : ReactElement[] = [];
-            let indexTemp : ReactElement[] = [];
-
-            if(index.children){
-                let imgSrc = navListActive[key] === true? "/arrow-down-light.svg":"/arrow-up-light.svg";
-                indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
-                    if(lastSizeWidth.current && lastSizeWidth.current < 768){
-                        setNavListActive(List=>{
-                        const newArray = Array(List.length).fill(false);
-                        if(List[key] === false){
-                            newArray[key] = true;
-                        }
-                        return newArray;
-                    })
-                    }
-                }}>{index.title}<Image className={Style.imageArrow} src={imgSrc} alt="arrow-up" width={40} height={40}></Image></span>);
-
-                index.children.forEach((childrenIndex, childrenKey )=>{
-                    childTemp.push(<li key={`child-${key}-${childrenKey}`}><Link href={childrenIndex.href}>{childrenIndex.title}</Link></li>);
-                })
-            }else{
-                if(index.title === "個人資訊"){
-                    // 同意使用cookies才顯示登入
-                    if(consent === false) continue;
-                    if(userLogin === false){
-                        indexTemp.push(<span key={`span-${key}`} onClick={(e)=>{
-                            setLoginDiv(true); 
-                            closeNav();
-                        }}>登入</span>)
-                    }else{
-                        indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
-                    }
-                    
-                    
-                }else{
-                    indexTemp.push(<Link key={`Link-${key}`} href={index.href}> {index.title} </Link>)
-                    
-                }
+            // 不予許cookies時 個人資訊跳過
+            if(consent === false && index.title === "個人資訊"){
+                continue;
             }
 
-            temp.push(
-                <li key={key}>
-                    {indexTemp}
-                    {childTemp.length !== 0?<ul className={`${Style.childUl} ${navListActive[key] === false? Style.childHidden:""}`}>{childTemp}</ul>:null}
-                </li>);
+            if(index.children){
+                let imgString : string = "";
+                if(darkMode){
+                    imgString =navListActive[key] === true ? "/arrow-down-dark.svg":"/arrow-up-dark.svg";
+                }else{
+                    imgString = navListActive[key] === true ? "/arrow-down-light.svg":"/arrow-up-light.svg";
+                }
+
+                index.children.forEach((childIndex,childKey)=>{
+                    childTemp.push(<li key={`child-li-${childKey}`} ><span onClick={()=>{routerTo(index.href,childIndex.hash)}}>{childIndex.title}</span></li>)
+                })
+                temp.push(<li key={`index-li-${key}`}>
+                    <span className={Style.childrenRouterSpan} onClick={()=>{routerTo(index.href,"")}} ></span>
+                    <span className={Style.childrenTitleSpan} onClick={navListActive[key]=== true?()=>{setNavListActive(index=>{
+                        const newArray : Boolean[] = new Array(index.length).fill(false);
+                        return newArray;
+                    })}
+                    :()=>{setNavListActive(index=>{
+                        const newArray : Boolean[] = new Array(index.length).fill(false);
+                        newArray[key] = true;
+                        return newArray;
+                    })}}> {index.title} <img className={Style.imageArrow} src={imgString} alt={`click-img-${key}`} /></span>
+                    <ul key={`child-ul-${key}`} className={`${Style.childUl} ${navListActive[key] === true?Style.openChild:null}`}>{childTemp}</ul>
+                </li>)
+            }else{
+                if(index.title === "個人資訊"){
+                    // 有登入則選是個人資訊與登出 沒登入則顯示登入
+                    if(userLogin){
+                        temp.push(<li key={`index-li-${key}`}><span onClick={()=>{routerTo(index.href,"");}}>{index.title}</span></li>)
+                        temp.push(<li key={`index-li-loginOut`}><span onClick={()=>{LoginOut(); navButtonFunction(false);}}>登出</span></li>)
+                    }else{
+                        temp.push(<li key={`index-li-${key}`}><span onClick={()=>{setLoginDiv(true);navButtonFunction(false);}}>登入</span></li>)
+                    }
+                }else{
+                    temp.push(<li key={`index-li-${key}`}><span onClick={()=>{routerTo(index.href,"");}}>{index.title}</span></li>);
+                }
+            }
         }
-        if(userLogin === true && consent === true){
-            temp.push(<li key={`li-loginOut`}><span key={`span-loginOut`} onClick={(e)=>{LoginOut()}}>登出</span></li>)
-        }
+
+
 
         return(
             <ul>
@@ -346,18 +333,11 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
         <>
             <header ref={headerDiv} id="header" className={`${Style.header} ${scrollMove === true? Style.headerHidden:""} ` }>
                 <div className={`${Style.menu}`}>
-                    <Link href={`/`}>
+                    <span onClick={()=>{routerTo("/","");}} className={Style.iconImgSpan}>
                         <Image src={darkMode?"/selficon_light.svg":"/selficon.svg"} alt="icon" width={40} height={40} priority ></Image>
-                    </Link>
-                    <button onClick={(e)=>{
-                        if(navBoolean.current === false){
-                            setNavOpen(!navOpen);
-                            navBoolean.current = true;
-                            let navArray = Array(navList.current.length).fill(false);
-                            setNavListActive(navArray);
-                        }
-                    }} className={`${Style.menuButton}`}>
-                        <div id="menuButtonIcon" className={`${Style.menuButtonIcon}`}>
+                    </span>
+                    <button aria-label="closeMenuButton" onClick={navOpen?()=>navButtonFunction(false):()=>navButtonFunction(true)} className={`${Style.menuButton}`}>
+                        <div id="menuButtonIcon" className={`${Style.menuButtonIcon} ${navOpen?Style.navIconOpen:null}`}>
                             <span></span>
                             <span></span>
                             <span></span>
@@ -365,7 +345,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     </button>
                 </div>
 
-                <nav id="HeaderNav" className={`${Style.nav}`}>
+                <nav id="HeaderNav" className={`${Style.nav} ${navOpen?Style.navOpen:null}`}>
                     <NavListShow/>
                 </nav>
             </header>

@@ -28,7 +28,6 @@
         justify-content: center;
         margin:16px 0;
         gap:16px;
-
         .faceDiv{
             width: 100%;
             display: flex;
@@ -37,8 +36,20 @@
             justify-content: center;
             gap: 8px;
             text-align: center;
+            div{
+                h2{
+                    padding: 8px 0;
+                }
+            }
             @media(min-width:768px){
                 flex-direction: row;
+                div{
+                    width: auto;
+                    h2{
+                        padding:0;
+                        width: auto;
+                    }
+                }
             }
             .disable{
                 color: var(--foreground-2);

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState,useEffect,useContext,createContext } from "react";
-import LoginOut from "./loginOut";
 // 建立context種類
 type cookiesCheckProps={
     consent:boolean,
