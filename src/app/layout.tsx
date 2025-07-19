@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     ],
   },
   authors:[{name:"劉星緯"}],
-  colorScheme:"light dark",
+  
   creator:"劉星緯",
 
   openGraph:{
@@ -45,7 +45,10 @@ export const viewport : Viewport = {
 
 export default function RootLayout( {children}: Readonly<{children: React.ReactNode;}> ) {
   return (
-    <html lang="zh-Hant">
+    <html lang="zh-Hant" >
+      <head>
+        <meta name="color-scheme" content="light dark"/>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <CookieConsentProvider>
           <Navbar></Navbar>
