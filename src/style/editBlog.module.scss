@@ -35,6 +35,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-around;
+                div{
+                    width: auto;
+                }
                 select{
                     background-color: var(--background-2);
                     padding:8px;
@@ -122,16 +125,16 @@
         .show{
             width: 45%;
             min-width: 300px;
-            flex-basis: 50%;
+            min-height: 100vh;
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap:8px;
+            overflow-y: hidden;
             .showDiv{
                 width: 100%;
-                height: 90vh;
                 .titleDiv{
                     display: flex;
                     flex-direction: column;
@@ -148,6 +151,28 @@
                         align-items: center;
                         justify-content: space-around;
                     }
+                }
+                .showTextDiv{
+                    overflow-y: scroll;
+                    height: 90vh;
+                    border: 2px solid var(--foreground) ;
+                }
+                .categoryStringDiv{
+                    padding:16px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: start;
+                    flex-wrap: wrap;
+                    gap: 16px;
+                    span{
+                        background-color: var(--background-1);
+                        border-radius: 8px;
+                        padding: 4px 8px;
+                        &:hover{
+                            background-color: var(--background-2);
+                    }
+                }
                 }
             }
         }
@@ -173,6 +198,7 @@
             width: 300px;
         }
         &:hover{
+            cursor: pointer;
             background-color: var(--tagcolor-1);
         }
     }

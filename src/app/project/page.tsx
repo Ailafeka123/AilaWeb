@@ -1,14 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect,Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 
 import Style from '@/style/project.module.scss';
 
 import { databaseGetAll } from "@/lib/databaseGetAll";
 
-
+function GetSearchString( { onChangeSet,toSearch } : {onChangeSet : (searchKey:string) => void; toSearch:(active:boolean)=>void}){
+    const searchParms = useSearchParams();
+    const getSearchString = searchParms.get("searchKey");
+    useEffect(()=>{
+        if(getSearchString){
+            onChangeSet(getSearchString);
+        }
+        toSearch(true);
+    },[])
+    return <></>;
+}
 
 type showData ={
     id:string,
@@ -22,10 +32,14 @@ export default function Project(){
     const router = useRouter();
     // 資料清單 建立
     const [projectData ,setProjectData] = useState<showData[]>([]);
+    // 是否完成抓到search這個動作。
+    const [getSearchKey, setGetSearchKey] = useState<boolean>(false);
+    // 查詢的key 以及是否開啟搜尋動作
     const [searchString, setSearchString] = useState<string>("");
     const [searchStart , setSearchStart] = useState<boolean>(false);
     // 初始化 載入所有project
     useEffect(()=>{
+        if(getSearchKey === false) return;
         const getData = async()=>{
             const data = await databaseGetAll("Project",searchString,"creatTime","asc",false);
             const dataList =  data.map((index:any)=>{
@@ -39,7 +53,7 @@ export default function Project(){
             setProjectData(dataList);
         }
         getData();
-    },[])
+    },[getSearchKey])
 
     useEffect(()=>{
         if(searchStart === false){
@@ -100,6 +114,9 @@ export default function Project(){
     }
     return (<>
         <main className={Style.main}>
+            <Suspense>
+                <GetSearchString onChangeSet={setSearchString} toSearch={setGetSearchKey}/>
+            </Suspense>
             <search className={Style.searchDiv}>
                 <label>搜尋:</label>
                 <input value={searchString} onChange={(e)=>{

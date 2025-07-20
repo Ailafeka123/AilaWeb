@@ -96,9 +96,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
     // 點擊非header的情況 關閉nav
     const clickOutside = (e :PointerEvent) =>{
         // 前兩者避免null 後面兩個條件 點擊外面 = false , clickCloseNav true = 開啟中
-        if(e.target instanceof Node){
-            console.log(`是否點擊外部 = ${headerDiv.current?.contains(e.target)}`)
-        }
         if(headerDiv.current && e.target instanceof Node && !headerDiv.current.contains(e.target)  && clickCloseNav.current === true){
             navButtonFunction(false);
         }
@@ -115,7 +112,6 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                     window.scrollTo({ top: willMoveY, behavior: "smooth" });
                 }
             }
-            console.log("進行smooth");
         }else{
             if(hashString === ""){
                 router.push(routerHref);

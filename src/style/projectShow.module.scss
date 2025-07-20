@@ -53,9 +53,14 @@
                 span{
                     background-color: var(--background-2);
                     border-radius:  8px;
-                    padding: 4px 8px  ;
+                    padding: 4px 8px;
+                    cursor: pointer;
+                    &:hover{
+                        background-color: var(--background-3);
+                    }
                     &:nth-child(1){
                         background-color: var(--background-1);
+                        cursor:auto;
                     }
                 }
             }
@@ -72,6 +77,19 @@
             h2{
                 font-size: 24px;
             }
+            pre{
+                display: block;
+                width: 100%;
+                padding:16px 8px;
+                background-color: var(--background-1);
+                code{
+                    display: block;
+                    width: 100%;
+                    white-space: pre-wrap;
+                    word-break: break-word;
+                }
+            }
+
         }
     }
 }

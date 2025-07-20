@@ -16,6 +16,7 @@ type showData ={
     title:string,
     category:string[],
     creatTime:string,
+    editTime:string,
     complete:boolean,
 }
 
@@ -50,6 +51,7 @@ export default function BlogListComponent(){
                     title:index.title,
                     category:index.category,
                     creatTime:index.creatTime,
+                    editTime:index.editTime,
                     complete:index.complete,
                 })
             })
@@ -81,6 +83,7 @@ export default function BlogListComponent(){
                         title:index.title,
                         category:index.category,
                         creatTime:index.creatTime,
+                        editTime:index.editTime,
                         complete:index.complete,
                     })
                 })
@@ -131,6 +134,7 @@ export default function BlogListComponent(){
                     <span>{index.method}</span>
                     <span>{categoryList}</span>
                     <span>{index.creatTime}</span>
+                    <span>{index.editTime}</span>
                     <span>{index.complete?"是":"否"}</span>
                     <div className={Style.cardEditDiv}>
                         <button type="button" onClick={()=>{router.push(`/selfdata/editBlog?id=${index.id}&mod=${index.method}`)}} >修正</button>
@@ -172,6 +176,7 @@ export default function BlogListComponent(){
                 <span>類型</span>
                 <span>分類</span>
                 <span>建立時間</span>
+                <span>修改時間</span>
                 <span>是否公布</span>
                 <span>編輯</span>
             </div>

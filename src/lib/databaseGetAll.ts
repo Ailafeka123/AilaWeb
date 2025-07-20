@@ -20,6 +20,7 @@ export async function databaseGetAll(method:string,searchKey:string,orderName:"c
             q = query( collection(db,method),where("complete","==" ,true),orderBy(orderName,order) )
         }
     }else{
+        searchKey.toLowerCase();
         if(editMode){
             q  = query (collection(db,method),where("searchKey","array-contains",searchKey), orderBy(orderName,order));
         }else{

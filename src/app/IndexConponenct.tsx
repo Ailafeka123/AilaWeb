@@ -2,7 +2,6 @@
 
 import Style from '@/style/index.module.scss';
 import { useState,useEffect,useRef } from "react";
-import { text } from 'stream/consumers';
 
 export default function IndexComponent(){
   // 抓取第一個物件
@@ -93,7 +92,12 @@ export default function IndexComponent(){
               <h2>個人介紹</h2>
               <div className={Style.aboutMeDiv}>
                 <img className={Style.headImg} src="/index/self.jpg"></img>
+                <div>
+                  <p>目前</p>
+
+                </div>
               </div>
+
           </div>
           <div id="triIndex" className=''>
 

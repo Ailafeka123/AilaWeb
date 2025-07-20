@@ -37,6 +37,7 @@ type projectDataList = {
 
 
 export default function ProjectShowComponent(){
+    const router = useRouter();
     const [projectId,setProjectId] = useState<string>("")
     const [projectData ,setProjectData] = useState<projectDataList>({
         title:"",
@@ -81,7 +82,7 @@ export default function ProjectShowComponent(){
                         <span>{`分類:`}</span>
                         {projectData.category.length && projectData.category.map((index,key)=>{
                             return(
-                                <span key = {key}>{index}</span>
+                                <span key = {key} onClick={()=>{router.push(`/project?searchKey=${index.toLowerCase()}`)}}>{index}</span>
                             )
                         })}
                     </div>

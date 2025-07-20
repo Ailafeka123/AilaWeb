@@ -134,7 +134,13 @@ export default function EditBlogComponent(){
     const creatSearchFunction = ():string[] =>{
         const newString = [...editdata.category,editdata.title].join(" ");
         const newSearchKey = newString.toLowerCase().split(/[\s,.;]+/);
-        return newSearchKey;
+        const searchSet = new Set<string>();
+        newSearchKey.forEach(index=>{
+            for(let i = 1 ; i <= index.length ;i++){
+                searchSet.add(index.slice(0,i))
+            }
+        })
+        return Array.from(searchSet);
     }
 
 
@@ -153,10 +159,10 @@ export default function EditBlogComponent(){
                             <span>最後編輯時間:{`${editdata.EditTime}`}</span>
                         </div>
                     </header>
-                    <section>
+                    <section className={Style.showTextDiv}>
                         <div dangerouslySetInnerHTML={{ __html: showText }} className={Style.showDiv} />
                     </section>
-                    <div>{categoryString}</div>
+                    <div className={Style.categoryStringDiv}>{categoryString}</div>
                 </article>
             )
 
@@ -170,10 +176,10 @@ export default function EditBlogComponent(){
                         <span>最後編輯時間:{`${editdata.EditTime}`}</span>
                     </div>
                 </header>
-                <section>
+                <section className={Style.showTextDiv}>
                     {showText}
                 </section>
-                <div>分類:{categoryString}</div>
+                <div className={Style.categoryStringDiv}>分類:{categoryString}</div>
             </article>
         )
     }

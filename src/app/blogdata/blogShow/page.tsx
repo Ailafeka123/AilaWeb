@@ -33,6 +33,7 @@ type projectDataList = {
     editTime:string,
 }
 export default function blogShow(){
+    const router = useRouter();
     const [projectId,setProjectId] = useState<string>("")
     const [projectData ,setProjectData] = useState<projectDataList>({
         title:"",
@@ -77,7 +78,7 @@ export default function blogShow(){
                         <span>{`分類:`}</span>
                         {projectData.category.length && projectData.category.map((index,key)=>{
                             return(
-                                <span key = {key}>{index}</span>
+                                <span key = {key} onClick={()=>{router.push(`/blogdata?searchKey=${index.toLowerCase()}`)}}>{index}</span>
                             )
                         })}
                     </div>

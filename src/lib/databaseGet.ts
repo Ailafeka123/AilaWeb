@@ -8,10 +8,6 @@ export default async function databaseGet (mod:string,id:string):Promise<Record<
         const docRef =  doc( db, mod, id);
         const snapshot = await getDoc(docRef);
         if(snapshot.exists()){
-            console.log({
-                id:snapshot.id,
-                ...snapshot.data(),
-            })
             return({
                 id:snapshot.id,
                 ...snapshot.data(),
