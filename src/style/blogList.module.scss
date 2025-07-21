@@ -44,6 +44,12 @@
                 width: 150px;
                 text-align: center;
             }
+            .sortTitle{
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--background-4);
+                }
+            }
             
         }
         .cardShowDiv{

@@ -5,13 +5,12 @@ import { db } from "./database";
 import { collection, query, where, getDocs, orderBy,limit } from "firebase/firestore";
 
 
-export async function databaseGetAll(method:string,searchKey:string,orderName:"creatTime",order:"asc"|"desc", editMode:true|false, ):Promise<any>{
+export async function databaseGetAll(method:string,searchKey:string,orderName:"title"|"creatTime"|"editTime",order:"asc"|"desc", editMode:true|false, ):Promise<any>{
     let q ;
     // editMod => true => complete無所謂   false => complete = true
     // return id, category,creatTime,title
     // array-contains 單一符合條件
     // array-contains-any 要輸入string[] 符合
-
 
     if(searchKey === ""){
         if(editMode){

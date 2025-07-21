@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef,useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import Style from "@/style/blogList.module.scss";
@@ -32,12 +32,18 @@ export default function BlogListComponent(){
     // 獲得資料放置
     const [getData,setGetData] = useState<showData[]>([]);
     // 二度確認刪除功能
+    // 刪除確認框
     const [checkDeleteDiv,setCheckDeleteDiv] = useState<boolean>(false);
+    // 確認刪除
     const [checkDelete, setCheckDelete] = useState<boolean>(false);
     // 確認刪除ID的參數
     const deleteDataRef = useRef<[string,string]>(["",""]);
+    // 搜尋方式 [按照什麼搜尋,升續或降冪]
+    const [sortMethod , setSortMethod] = useState<["title"|"creatTime"|"editTime" ,"asc"|"desc"]>(["creatTime","asc"]);
+    // 是否要顯示部落格 作品 還是兩者都要 0 = 預設 , 1 = 作品,  2 = 部落格
+    const [searchMethod,setSearchMethod] = useState<0|1|2>(0);
     //  
-    // 初始化 搜尋全部
+    // 初始化 第一次進入時的搜尋全部
     useEffect(()=>{
         const getData = async() =>{
             const getBlog = await databaseGetAll("Blog","","creatTime","asc",true);
@@ -61,7 +67,7 @@ export default function BlogListComponent(){
     },[])
     // 查詢功能
     useEffect(()=>{
-        if(!searchUse) return;
+        if(searchUse === false) return;
 
         if(searchUse){
             const changeTolowerString = searchInput.toLowerCase().trim();
@@ -72,8 +78,18 @@ export default function BlogListComponent(){
             }
 
             const getData = async() =>{
-                const getBlog = await databaseGetAll("Blog",changeTolowerString,"creatTime","asc",true);
-                const getProject = await databaseGetAll("Project",changeTolowerString,"creatTime","asc",true);
+                let getProject = [];
+                let getBlog = [];
+                // if(searchMethod === 1){
+                //     getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
+                // }else if(searchMethod === 2){
+                //     getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
+                // }else{
+                //     getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
+                //     getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
+                // }
+                getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
+                getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
                 const newArray = [...getBlog,...getProject];
                 const putArray:showData[] = newArray.map(index=>{
                     return({
@@ -93,6 +109,8 @@ export default function BlogListComponent(){
             setSearchUse(false);
         }
     },[searchUse])
+
+
     // 刪除功能
     useEffect(()=>{
         if(checkDelete === false) return;
@@ -105,12 +123,13 @@ export default function BlogListComponent(){
                 // 關閉確認視窗
                 setCheckDelete(false);
                 setCheckDeleteDiv(false);
+                // 觸發重新搜尋
                 setSearchUse(true);
             }
         }
         deleteUse();
     },[checkDelete])
-
+    // 刪除確認框
     const ConfirmDiv = () =>{
         return(
         <div className={`${Style.confirmDiv} ${checkDeleteDiv?Style.confirmDivShow:""}`}>
@@ -126,7 +145,22 @@ export default function BlogListComponent(){
     }
     // 將data轉為清單顯示
     const ShowDataList = () =>{
-        const DataList = getData.map((index,key)=>{
+        const newGetData = useMemo(()=>{
+            let noFilterData = [];
+            if (sortMethod[1] === "asc"){
+                noFilterData = [...getData].sort((a,b) => a[sortMethod[0]].localeCompare(b[sortMethod[0]]));
+            }else{
+                noFilterData =  [...getData].sort((a,b)=> b[sortMethod[0]].localeCompare(a[sortMethod[0]]));
+            }
+            if(searchMethod === 1){
+                noFilterData = noFilterData.filter(index=>index.method === "Project");
+            }else if(searchMethod === 2){
+                noFilterData = noFilterData.filter(index=>index.method === "Blog");
+            }
+            return noFilterData;
+        },[sortMethod,searchMethod,getData])
+
+        const DataList = newGetData.map((index,key)=>{
             let categoryList = index.category.join(",");
             return(
                 <div id={index.id} key={key} className={Style.card}>
@@ -152,6 +186,18 @@ export default function BlogListComponent(){
             </div>
         )
     }
+    // 轉換排序功能
+    const changeSort = (sortName:"title"|"creatTime"|"editTime") =>{
+        if(sortName === sortMethod[0]){
+            setSortMethod(index=>{
+                let order : "asc"|"desc" = index[1] === "asc"? "desc" : "asc";
+                return [index[0],order];
+            })
+        }else{
+            setSortMethod([sortName,"asc"]);
+        }
+    }
+
 
     return(
     <main className={`${Style.main}`}>
@@ -160,23 +206,31 @@ export default function BlogListComponent(){
             <search className={`${Style.search}`}>
                 <label > 搜尋:</label>
                 <input value={searchInput} onChange={(e)=>{
-                    // const inputValue:string = e.target.value;
                     setSearchInput(e.target.value)
                 }}></input>
                 <button type="button" onClick={()=>{
                     setSearchUse(true);
                 }} >進行搜尋</button>
                 <button type="button" onClick={()=>{router.push(`/selfdata/editBlog`)}}>建立新資料</button>
+                <button type="button" onClick={()=> {setSearchMethod(index=>{
+                    if(index === 0){
+                        return 1
+                    }else if(index === 1){
+                        return 2
+                    }else{
+                        return 0
+                    }
+                    })}} >{searchMethod===0?"顯示全部":searchMethod === 1?"僅顯示作品":"僅顯示部落格"}</button>
             </search>
         </div>
         <article className={Style.article}>
             
             <div className={Style.cardTitle}>
-                <span>標題</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("title")}}>標題{sortMethod[0] === "title" && (sortMethod[1]==="asc"?"(上)":"(下)") }</span>
                 <span>類型</span>
                 <span>分類</span>
-                <span>建立時間</span>
-                <span>修改時間</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("creatTime")}}>建立時間{sortMethod[0] === "creatTime" && (sortMethod[1]==="asc"?"(上)":"(下)") }</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("editTime")}}>修改時間{sortMethod[0] === "editTime" && (sortMethod[1]==="asc"?"(上)":"(下)")}</span>
                 <span>是否公布</span>
                 <span>編輯</span>
             </div>
