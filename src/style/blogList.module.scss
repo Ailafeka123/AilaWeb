@@ -45,9 +45,17 @@
                 text-align: center;
             }
             .sortTitle{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
                 &:hover{
                     cursor: pointer;
                     background-color: var(--background-4);
+                }
+                img{
+                    width: 30px;
+                    height: 30px;
                 }
             }
             
@@ -68,6 +76,8 @@
                 span{
                     width: 150px;
                     text-align: center;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 .cardEditDiv{
                     width: 150px;

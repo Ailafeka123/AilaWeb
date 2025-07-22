@@ -42,9 +42,18 @@ export default function BlogListComponent(){
     const [sortMethod , setSortMethod] = useState<["title"|"creatTime"|"editTime" ,"asc"|"desc"]>(["creatTime","asc"]);
     // 是否要顯示部落格 作品 還是兩者都要 0 = 預設 , 1 = 作品,  2 = 部落格
     const [searchMethod,setSearchMethod] = useState<0|1|2>(0);
+    // 捕捉是否為黑暗模式
+    const [darkMode,setDarkMode] = useState<boolean>(false);
     //  
     // 初始化 第一次進入時的搜尋全部
     useEffect(()=>{
+        // 捕捉是否為黑暗模式
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        if (media.matches) {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
         const getData = async() =>{
             const getBlog = await databaseGetAll("Blog","","creatTime","asc",true);
             const getProject = await databaseGetAll("Project","","creatTime","asc",true);
@@ -80,14 +89,6 @@ export default function BlogListComponent(){
             const getData = async() =>{
                 let getProject = [];
                 let getBlog = [];
-                // if(searchMethod === 1){
-                //     getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
-                // }else if(searchMethod === 2){
-                //     getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
-                // }else{
-                //     getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
-                //     getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
-                // }
                 getProject = await databaseGetAll("Project",changeTolowerString,sortMethod[0],sortMethod[1],true);
                 getBlog = await databaseGetAll("Blog",changeTolowerString,sortMethod[0],sortMethod[1],true);
                 const newArray = [...getBlog,...getProject];
@@ -198,6 +199,21 @@ export default function BlogListComponent(){
         }
     }
 
+    let imgSrc:string = "";
+    if(darkMode){
+        if(sortMethod[1]==="asc"){
+            imgSrc = "/sortUp-dark.svg"
+        }else{
+            imgSrc = "/sortDown-dark.svg"
+        }
+    }else{
+                if(sortMethod[1]==="asc"){
+            imgSrc = "/sortUp-light.svg"
+        }else{
+            imgSrc = "/sortDown-light.svg"
+        }
+
+    }
 
     return(
     <main className={`${Style.main}`}>
@@ -226,11 +242,11 @@ export default function BlogListComponent(){
         <article className={Style.article}>
             
             <div className={Style.cardTitle}>
-                <span className={Style.sortTitle} onClick={()=>{changeSort("title")}}>標題{sortMethod[0] === "title" && (sortMethod[1]==="asc"?"(上)":"(下)") }</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("title")}}>標題{sortMethod[0] === "title" && <img src={imgSrc}></img> }</span>
                 <span>類型</span>
                 <span>分類</span>
-                <span className={Style.sortTitle} onClick={()=>{changeSort("creatTime")}}>建立時間{sortMethod[0] === "creatTime" && (sortMethod[1]==="asc"?"(上)":"(下)") }</span>
-                <span className={Style.sortTitle} onClick={()=>{changeSort("editTime")}}>修改時間{sortMethod[0] === "editTime" && (sortMethod[1]==="asc"?"(上)":"(下)")}</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("creatTime")}}>建立時間{sortMethod[0] === "creatTime" && <img src={imgSrc}></img> }</span>
+                <span className={Style.sortTitle} onClick={()=>{changeSort("editTime")}}>修改時間{sortMethod[0] === "editTime" && <img src={imgSrc}></img> }</span>
                 <span>是否公布</span>
                 <span>編輯</span>
             </div>

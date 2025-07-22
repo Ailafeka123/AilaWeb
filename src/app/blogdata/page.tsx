@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect,Suspense } from "react";
+import { useState, useEffect, Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 
@@ -34,14 +34,19 @@ export default function Blogdata(){
     const [projectData ,setProjectData] = useState<showData[]>([]);
     // 是否完成抓到search這個動作。
     const [getSearchKey, setGetSearchKey] = useState<boolean>(false);
-
+    // 查詢的key 以及是否開啟搜尋動作
     const [searchString, setSearchString] = useState<string>("");
     const [searchStart , setSearchStart] = useState<boolean>(false);
+
+    // 排序
+    const [sortMethod, setSortMethod] = useState<["title"|"editTime","asc"|"desc"]>(["editTime","asc"])
+
+
     // 初始化 載入所有project
     useEffect(()=>{
         if(getSearchKey === false) return;
         const getData = async()=>{
-            const data = await databaseGetAll("Blog",searchString.toLowerCase(),"creatTime","asc",false);
+            const data = await databaseGetAll("Blog",searchString.toLowerCase(),sortMethod[0],sortMethod[1],false);
             const dataList =  data.map((index:any)=>{
                 return({
                     id:index.id,
@@ -61,7 +66,7 @@ export default function Blogdata(){
         }
         const getData = async()=>{
             try{
-                const data = await databaseGetAll("Blog",searchString.toLowerCase(),"creatTime","asc",false);
+                const data = await databaseGetAll("Blog",searchString.toLowerCase(),sortMethod[0],sortMethod[1],false);
                 const dataList =  data.map((index:any)=>{
                     return({
                         id:index.id,
@@ -83,7 +88,18 @@ export default function Blogdata(){
     },[searchStart])
 
     const ShowDataList = () =>{
-        const data = projectData.map((index,key)=>{
+        const filterData = useMemo(()=>{
+            const newData = [...projectData];
+            if(sortMethod[1] === "asc"){
+                newData.sort((a,b)=> a[sortMethod[0]].localeCompare(b[sortMethod[0]]) )
+            }else{
+                newData.sort((a,b)=> b[sortMethod[0]].localeCompare(a[sortMethod[0]]) )
+            }
+            return newData;
+        },[projectData,sortMethod])
+
+
+        const data = filterData.map((index,key)=>{
             return (
                 <div key = {key} className={Style.card} onClick={()=>{
                     router.push(`/blogdata/blogShow?id=${index.id}`);
@@ -123,6 +139,20 @@ export default function Blogdata(){
                     setSearchString(e.target.value.trim());
                 }}></input>
                 <button type="button" onClick={()=>{setSearchStart(true)}} >提交</button>
+                <button type="button" onClick={()=>{setSortMethod(index=>{
+                    if(index[0] === "title"){
+                        return ["editTime",index[1]]
+                    }else{
+                        return ["title",index[1]]
+                    }
+                })}}>{sortMethod[0] === "title"? "標題排序" :"時間排序"}</button>
+                <button type="button" onClick={()=>{setSortMethod(index=>{
+                    if(index[1] === "asc"){
+                        return([index[0],"desc"]);
+                    }else{
+                        return([index[0],"asc"])
+                    }
+                })}}>{sortMethod[1] === "asc" ? "由小到大排序":"由大到小排序"}</button>
             </search>
             <article className={Style.article}>
                 <div className={Style.cardTitle}>
