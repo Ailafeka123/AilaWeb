@@ -2,10 +2,10 @@
 
 import { tree } from "next/dist/build/templates/app-page";
 import { db } from "./database";
-import { collection, query, where, getDocs, orderBy,limit } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
 
 
-export async function databaseGetAll(method:string,searchKey:string,orderName:"title"|"creatTime"|"editTime",order:"asc"|"desc", editMode:true|false, ):Promise<any>{
+export async function databaseGetAll(method:string,searchKey:string,orderName:"title"|"creatTime"|"editTime",order:"asc"|"desc", editMode:true|false, limitNumber:number = 0 ):Promise<any>{
     let q ;
     // editMod => true => complete無所謂   false => complete = true
     // return id, category,creatTime,title
@@ -13,18 +13,36 @@ export async function databaseGetAll(method:string,searchKey:string,orderName:"t
     // array-contains-any 要輸入string[] 符合
 
     if(searchKey === ""){
-        if(editMode){
-            q = query( collection(db,method),orderBy(orderName,order) )
+        if(limitNumber === 0){
+            if(editMode){
+                q = query( collection(db,method),orderBy(orderName,order) )
+            }else{
+                q = query( collection(db,method),where("complete","==" ,true),orderBy(orderName,order) )
+            }
         }else{
-            q = query( collection(db,method),where("complete","==" ,true),orderBy(orderName,order) )
+            if(editMode){
+                q = query( collection(db,method),orderBy(orderName,order),limit(limitNumber) )
+            }else{
+                q = query( collection(db,method),where("complete","==" ,true),orderBy(orderName,order),limit(limitNumber) )
+            }
         }
+        
     }else{
-        searchKey.toLowerCase();
-        if(editMode){
-            q  = query (collection(db,method),where("searchKey","array-contains",searchKey), orderBy(orderName,order));
+        searchKey = searchKey.toLowerCase();
+        if(limitNumber === 0){
+            if(editMode){
+                q  = query (collection(db,method),where("searchKey","array-contains",searchKey), orderBy(orderName,order));
+            }else{
+                q  = query (collection(db,method),where("complete","==" ,true),where("searchKey","array-contains",searchKey), orderBy(orderName,order));
+            }
         }else{
-            q  = query (collection(db,method),where("complete","==" ,true),where("searchKey","array-contains",searchKey), orderBy(orderName,order));
+            if(editMode){
+                q  = query (collection(db,method),where("searchKey","array-contains",searchKey), orderBy(orderName,order),limit(limitNumber) );
+            }else{
+                q  = query (collection(db,method),where("complete","==" ,true),where("searchKey","array-contains",searchKey), orderBy(orderName,order),limit(limitNumber) );
+            }
         }
+        
     }
 
 

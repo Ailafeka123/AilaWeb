@@ -1,0 +1,49 @@
+ .firstSee{
+        min-height: 500px;
+        height: 100vh;
+        width: 100%;
+        background-color: var(--background);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-image: linear-gradient(rgba(252, 252, 252, 0.1), rgba(255, 255, 255, 0.1)),url("/index/firstBG.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        @media(prefers-color-scheme: dark){
+            background-image:url("/index/firstBG.jpg")
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .FirstIndexH1{
+            transition: all 1s;
+            transform: translateX(-100vw);
+            padding: 0 16px;
+            h1{
+                text-align: center;
+            }
+            .firstSelfText{
+                position: relative;
+                text-align: center;
+                &::after{
+                    content: "";
+                    text-align: center;
+                    border: 2px var(--foreground) solid;
+                    border-width: 0 2px 0 0;
+                    animation: blink 1s step-start infinite;
+                }
+                @media(min-width: 768px){
+                    font-size: 24px;
+                }
+                
+            }
+        
+        }
+        .FirstIndexActive{
+            transform:  translateX(0);
+        }
+    }

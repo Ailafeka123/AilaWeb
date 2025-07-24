@@ -149,9 +149,9 @@ export default function BlogListComponent(){
         const newGetData = useMemo(()=>{
             let noFilterData = [];
             if (sortMethod[1] === "asc"){
-                noFilterData = [...getData].sort((a,b) => a[sortMethod[0]].localeCompare(b[sortMethod[0]]));
+                noFilterData = [...getData].sort((a,b) => a[sortMethod[0]].localeCompare(b[sortMethod[0]]) );
             }else{
-                noFilterData =  [...getData].sort((a,b)=> b[sortMethod[0]].localeCompare(a[sortMethod[0]]));
+                noFilterData =  [...getData].sort((a,b)=> b[sortMethod[0]].localeCompare(a[sortMethod[0]]) );
             }
             if(searchMethod === 1){
                 noFilterData = noFilterData.filter(index=>index.method === "Project");

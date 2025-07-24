@@ -1,107 +1,156 @@
 "use client";
 
 import Style from '@/style/index.module.scss';
-import { useState,useEffect,useRef } from "react";
+import { useState,useEffect,useRef,useMemo } from "react";
+import { useRouter } from 'next/navigation';
+import { databaseGetAll } from '@/lib/databaseGetAll';
+
+import IndexFirstComponent from '@/component/index/IndexFirstComponent';
+import IndexTriComponent from '@/component/index/IndexTriComponent';
+
+type dataType = {
+  id:string,
+  title:string,
+  category:string[],
+  editTime:string
+}
 
 export default function IndexComponent(){
-  // 抓取第一個物件
-  const firstRef = useRef<HTMLDivElement | null>(null);
-  // 簡單介紹文字 ref = [下一個字串,倒數三秒,減少 = true 增長 = false]
-  const selfTextRef = useRef< [string,number,boolean] >(["歡迎來到我的部落格", 0, false]);
-  const [firstSelfText,setFirstSelfText] = useState<string>("歡迎來到我的部落格");
-  // 測試是否可見
-  const [isVisible, setIsVisible] = useState(false);
+  // 轉跳
+  const router = useRouter();
+  // 抓取資料 目前抓取兩個資料各前三
+  const [projectData,setProjectData] = useState<dataType[]>([]);
+  const [blogData,setBlogData] = useState<dataType[]>([]);
+
+  const projectDivRef = useRef<HTMLDivElement|null>(null);
+  // 當前位置 與最大值
+  const [projectCardMove,setProjectCardMove] = useState<[number,number]>([4,7]);
+
+
+
   useEffect(()=>{
-    //抓取是否進入視窗 觸發之後關閉
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if(entry.isIntersecting){
-          setIsVisible(entry.isIntersecting);
-          observer.unobserve(entry.target);
-        }
-      },
-      {
-        root: null, // 預設為 viewport
-        threshold: 0.1, // 進入 10% 畫面就算看到
-      }
-    );
-    if (firstRef.current) {
-      observer.observe(firstRef.current);
-    }
-    return () => {
-      if (firstRef.current) {
-        observer.unobserve(firstRef.current);
-      }
-    };
-  },[])
-  // 第一個視窗可見時，觸發動畫。
-  useEffect(()=>{
-    if(isVisible === true){
-      setFirstSelfText("歡迎來到我的部落格");
-      const textChange = setInterval(()=>{
-        setFirstSelfText(index=>{
-          let newString : string = "";
-          // 刪減 false
-          if(selfTextRef.current[2]){
-            if(index !== ""){
-              newString = index.slice(0,index.length - 1);
-            }else{
-              if(selfTextRef.current[1] <= 5){
-                selfTextRef.current[1]++;
-              }else{
-                selfTextRef.current[1] = 0;
-                selfTextRef.current[2] = false;
-              }
-            }
-          // 增加 true
-          }else{
-            if(index !== selfTextRef.current[0]){
-              newString = selfTextRef.current[0].slice(0,index.length+1);
-            }else{
-              newString = index;
-              if(selfTextRef.current[1] <= 20){
-                selfTextRef.current[1]++;
-              }else{
-                selfTextRef.current[0] = (selfTextRef.current[0] === "歡迎來到我的部落格")? "目前正以前端工程師為目標邁進，興趣是創作東西" :"歡迎來到我的部落格";
-                selfTextRef.current[1] = 0;
-                selfTextRef.current[2] = true;
-              }
-            }
-          }
-          return newString;
+    // 抓取作品前三
+    const getProjectData = async() =>{
+      const getData = await databaseGetAll("Project","","editTime","desc",false,3);
+      const data = getData.map((index:any)=>{
+        return ({
+          id:index.id,
+          title:index.title,
+          category:index.category,
+          editTime:index.editTime,
         })
-      },100);
-      return()=>{
-        clearInterval(textChange);
-      }
+      })
+      setProjectData(data);
     }
-  },[isVisible]);
+    // 抓取部落格前三
+    const getBlogData = async() =>{
+      const getData = await databaseGetAll("Blog","","editTime","desc",false,3);
+      const data = getData.map((index:any)=>{
+        return({
+          id:index.id,
+          title:index.title,
+          category:index.category,
+          editTime:index.editTime,
+        })
+      }) 
+      setBlogData(data);
+    }
+
+    getProjectData();
+    getBlogData();
+
+  },[])
+
+  useEffect(()=>{
+    if(projectData.length === 0)return ;
+    if(projectDivRef.current){
+      let projectDataLen = projectDivRef.current.querySelectorAll(`.${Style.projectCard}`).length;
+      console.log(`projectDataLen = ${projectDataLen}`)
+    }
+    // 開啟監聽
+    // window.addEventListener()
+  },[projectData])
+
+  useEffect(()=>{
+
+  },[])
+
+  useEffect(()=>{
+    if(blogData.length === 0)return;
+    console.log(blogData)
+  },[blogData])
+
+  const ProjectDataShow = useMemo(() =>{
+    const projectLen:number = projectData.length;
+    let timeKey = 0;
+    // 前面邊界 需要後兩個資card key = 1 ,2
+    const preProjectList = projectData.map((index:any,key:number)=>{
+      if((key+1) < (projectLen-2) )return;
+      timeKey++;
+      return(
+        <div key={`card-${timeKey}`}  className={Style.projectCard} >
+          <h3>{index.title}</h3>
+          <div className={Style.categoryDiv}>
+            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
+          </div>
+          <p>最後更新時間:{index.editTime}</p>
+      </div>
+      )
+    })
+    // key = 3 ~ 2 + projectLen
+    const projectDataList = projectData.map((index:any,key:number)=>{
+      timeKey++;
+      return(
+      <div key={`card-${timeKey}`}  className={Style.projectCard} >
+          <h3>{index.title}</h3>
+          <div className={Style.categoryDiv}>
+            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
+          </div>
+          <p>最後更新時間:{index.editTime}</p>
+      </div>)
+    })
+    // 後面邊界 需要前兩個資料 key = 3 + projectLen ~ 4 + projectLen
+    const repeatDataList = projectData.map((index:any,key:number)=>{
+      if((key+1) >  (projectLen-2))return;
+      timeKey++;
+      return(
+      <div key={`card-${timeKey}`}  className={Style.projectCard} >
+          <h3>{index.title}</h3>
+          <div className={Style.categoryDiv}>
+            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
+          </div>
+          <p>最後更新時間:{index.editTime}</p>
+      </div>)
+    })
+    return (
+      <div className={`${Style.projectCardDiv}`} ref = {projectDivRef}>
+        {preProjectList}
+        {projectDataList}
+        {repeatDataList}
+      </div>
+    )
+  },[projectData])
+
 
   return (
       <main className={`${Style.main}`}>
-          <div id="firstIndex" ref={firstRef} className={`${Style.firstSee}` }>
-            <div className={` ${Style.FirstIndexH1}  ${isVisible === true? Style.FirstIndexActive:""} `}>
-              <h1>
-                您好，我是劉星緯
-              </h1>
-              <p className={Style.firstSelfText}>{firstSelfText}</p>
-            </div>
-          </div>
-
+          <IndexFirstComponent/>
           <div id="secIndex" className={Style.aboutDiv}>
               <h2>個人介紹</h2>
+              
               <div className={Style.aboutMeDiv}>
                 <img className={Style.headImg} src="/index/self.jpg"></img>
-                <div>
-                  <p>目前</p>
-
-                </div>
+                <p>學無止盡，每一天都比昨天更進步</p>
               </div>
-
+              <div className={Style.aboutMeTextDiv}>
+                <p>目前以前端工程師為目標，目前每天刷leetCode與製作個人作品為主。</p>
+                <p>創作的方向會比較偏好做一些具有動態感的小物件，對於美觀來說比較好看，就是比較費效能。</p>
+                <p>喜歡玩一些生存或角色類電子遊戲，喜歡逐步熟悉成長的感覺，會為此查許多攻略與嘗試。我覺得在撰寫程式方面也類似如此，遇到問題、想辦法解決、想不到則查資料或問AI，再回頭嘗試與理解。</p>
+                <p>目前製作的專案以ReactJS為主，後續也會陸續嘗試一些新的框架與插件去製作網站，後續也有可能會嘗試ReactNative。</p>
+                <p>感謝您的觀看，我的<span onClick={()=>{router.push('/project')}}>作品</span>與<span onClick={()=>{router.push("/blogdata")}}>文章</span>也歡迎觀看。</p>
+              </div>
           </div>
-          <div id="triIndex" className=''>
-
-          </div>
+          <IndexTriComponent/>
       </main>
   );
 }
