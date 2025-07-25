@@ -1,3 +1,4 @@
+
 .ProjectDiv{
         position: relative;
         display: flex;
@@ -9,6 +10,11 @@
         min-height: 500px;
         gap: 16px;
         background-color: var(--background-1);
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-drag: none; /* Safari */
+        -moz-user-drag: none;    /* Firefox */
+        -ms-user-drag: none;     /* IE */
         &::before{
             content: "";
             pointer-events: none;
@@ -29,18 +35,33 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             height: 100%;
             min-height: 400px;
-            width: 700%;
+            width: calc(var(--cardWidth)*7 + 36*6 + 24*2);
             gap: 36px;
             padding: 24px;
             overflow: hidden;
-            transform: translateX(000px);
-            transition: all 0.5s;
-            @for $i from 0 through 7 {
-                .move-#{$i}{
-                    transform:translateX(calc(-600px*#{$i} + 2400px) );
+            transform: translateX(0px);
+            --cardWidth:300px;
+            @media(min-width:768px){
+                --cardWidth:500px;
+            }
+            @media(min-width:1024px){
+                --cardWidth:600px;
+            }
+            @media(min-width:1440px){
+                --cardWidth:700px;
+            }
+            &.moving{
+                transition: transform 0.1s linear;
+            }
+            &.classMoving{
+                transition: transform 0.5s ease;
+            }
+            @for $i from 1 through 7 {
+                &.move-#{$i}{
+                    transform:translateX(calc( (var(--cardWidth) + 36px)*#{$i}*-1 + (var(--cardWidth) + 36px)*4  ) );
                 }
             }
             .projectCard{
@@ -50,15 +71,8 @@
                 justify-content: space-around;
                 height: 100%;
                 min-height: 400px;
-                width: 300px;
+                width: var(--cardWidth);
                 background-color: var(--background-2);
-                transition: all 0.3s;
-                @media(min-width:768px){
-                    width: 500px;
-                }
-                @media(min-width: 1024px){
-                    width: 600px;
-                }
                 &:hover{
                     cursor: pointer;
                     background-color: var(--background-3);

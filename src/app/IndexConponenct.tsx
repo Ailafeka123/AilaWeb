@@ -80,58 +80,6 @@ export default function IndexComponent(){
     console.log(blogData)
   },[blogData])
 
-  const ProjectDataShow = useMemo(() =>{
-    const projectLen:number = projectData.length;
-    let timeKey = 0;
-    // 前面邊界 需要後兩個資card key = 1 ,2
-    const preProjectList = projectData.map((index:any,key:number)=>{
-      if((key+1) < (projectLen-2) )return;
-      timeKey++;
-      return(
-        <div key={`card-${timeKey}`}  className={Style.projectCard} >
-          <h3>{index.title}</h3>
-          <div className={Style.categoryDiv}>
-            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
-          </div>
-          <p>最後更新時間:{index.editTime}</p>
-      </div>
-      )
-    })
-    // key = 3 ~ 2 + projectLen
-    const projectDataList = projectData.map((index:any,key:number)=>{
-      timeKey++;
-      return(
-      <div key={`card-${timeKey}`}  className={Style.projectCard} >
-          <h3>{index.title}</h3>
-          <div className={Style.categoryDiv}>
-            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
-          </div>
-          <p>最後更新時間:{index.editTime}</p>
-      </div>)
-    })
-    // 後面邊界 需要前兩個資料 key = 3 + projectLen ~ 4 + projectLen
-    const repeatDataList = projectData.map((index:any,key:number)=>{
-      if((key+1) >  (projectLen-2))return;
-      timeKey++;
-      return(
-      <div key={`card-${timeKey}`}  className={Style.projectCard} >
-          <h3>{index.title}</h3>
-          <div className={Style.categoryDiv}>
-            {index.category.map((categoryIndex:string,categoryKey:number) =>{return <span key={`${timeKey}-${categoryKey}`}>{categoryIndex}</span>})}
-          </div>
-          <p>最後更新時間:{index.editTime}</p>
-      </div>)
-    })
-    return (
-      <div className={`${Style.projectCardDiv}`} ref = {projectDivRef}>
-        {preProjectList}
-        {projectDataList}
-        {repeatDataList}
-      </div>
-    )
-  },[projectData])
-
-
   return (
       <main className={`${Style.main}`}>
           <IndexFirstComponent/>
@@ -150,7 +98,8 @@ export default function IndexComponent(){
                 <p>感謝您的觀看，我的<span onClick={()=>{router.push('/project')}}>作品</span>與<span onClick={()=>{router.push("/blogdata")}}>文章</span>也歡迎觀看。</p>
               </div>
           </div>
-          <IndexTriComponent/>
+          <IndexTriComponent moduleType = "Project" idName="triIndex"/>
+          <IndexTriComponent moduleType = "Blog" idName="fourIndex"/>
       </main>
   );
 }

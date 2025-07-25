@@ -68,7 +68,7 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
             {title:"前言", hash:"firstIndex"},
             {title:"個人介紹", hash:"secIndex"},
             {title:"最新作品", hash:"triIndex"},
-            {title:"最新文章",hash:""}
+            {title:"最新文章",hash:"fourIndex"}
         ]},
         {title:"作品集", href:"/project"},
         {title:"文章",href:"/blogdata"},
