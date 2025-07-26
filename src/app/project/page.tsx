@@ -133,26 +133,28 @@ export default function Project(){
                 <GetSearchString onChangeSet={setSearchString} toSearch={setGetSearchKey}/>
             </Suspense>
             <search className={Style.searchDiv}>
-                <label>搜尋:</label>
-                <input value={searchString} onChange={(e)=>{
-                    setSearchString(e.target.value.trim());
-                }}></input>
-                <button type="button" onClick={()=>{ if(searchStart === false)setSearchStart(true)}} >提交</button>
-
-                <button type="button" onClick={()=>{setSortMethod(index=>{
-                    if(index[0] === "title"){
-                        return ["editTime",index[1]]
-                    }else{
-                        return ["title",index[1]]
-                    }
-                })}}>{sortMethod[0] === "title"? "標題排序" :"時間排序"}</button>
-                <button type="button" onClick={()=>{setSortMethod(index=>{
-                    if(index[1] === "asc"){
-                        return([index[0],"desc"]);
-                    }else{
-                        return([index[0],"asc"])
-                    }
-                })}}>{sortMethod[1] === "asc" ? "由小到大排序":"由大到小排序"}</button>
+                <div className={Style.searchBox}>
+                    <input value={searchString} placeholder="請輸入要搜尋的內容" onChange={(e)=>{
+                        setSearchString(e.target.value.trim());
+                    }}></input>
+                    <button type="button" onClick={()=>{ if(searchStart === false)setSearchStart(true)}} >提交</button>
+                </div>
+                <div className={Style.sortDiv}>
+                    <button type="button" onClick={()=>{setSortMethod(index=>{
+                        if(index[0] === "title"){
+                            return ["editTime",index[1]]
+                        }else{
+                            return ["title",index[1]]
+                        }
+                    })}}>{sortMethod[0] === "title"? "標題排序" :"時間排序"}</button>
+                    <button type="button" onClick={()=>{setSortMethod(index=>{
+                        if(index[1] === "asc"){
+                            return([index[0],"desc"]);
+                        }else{
+                            return([index[0],"asc"])
+                        }
+                    })}}>{sortMethod[1] === "asc" ? "由小到大排序":"由大到小排序"}</button>
+                </div>
             </search>
             <article className={Style.article}>
                 <div className={Style.cardTitle}>

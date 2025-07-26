@@ -215,7 +215,8 @@ export default function Navbar({hiddenHeight = 500}:navbarProps){
                             const dataInput = {
                                 id:user.uid,
                                 email:user.email || null,
-                                level:"guest"
+                                level:"guest",
+                                blogMessage:[],
                             }
                             const result = await databaseSet("Auth",dataInput);
                         }

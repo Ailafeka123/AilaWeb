@@ -10,10 +10,10 @@ export default async function AuthReprovide( currentPassword : string):Promise<b
     let credential = EmailAuthProvider.credential(user.email , currentPassword);
     try{
         await reauthenticateWithCredential(user,credential);
-        console.log("驗證成功")
+        // console.log("驗證成功")
         return true;
     }catch(e){
-        console.log("驗證錯誤");
+        // console.log("驗證錯誤");
         console.error(e);
         return false;
     }

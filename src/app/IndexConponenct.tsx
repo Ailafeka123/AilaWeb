@@ -8,84 +8,17 @@ import { databaseGetAll } from '@/lib/databaseGetAll';
 import IndexFirstComponent from '@/component/index/IndexFirstComponent';
 import IndexTriComponent from '@/component/index/IndexTriComponent';
 
-type dataType = {
-  id:string,
-  title:string,
-  category:string[],
-  editTime:string
-}
+
 
 export default function IndexComponent(){
   // 轉跳
   const router = useRouter();
-  // 抓取資料 目前抓取兩個資料各前三
-  const [projectData,setProjectData] = useState<dataType[]>([]);
-  const [blogData,setBlogData] = useState<dataType[]>([]);
-
-  const projectDivRef = useRef<HTMLDivElement|null>(null);
-  // 當前位置 與最大值
-  const [projectCardMove,setProjectCardMove] = useState<[number,number]>([4,7]);
-
-
-
-  useEffect(()=>{
-    // 抓取作品前三
-    const getProjectData = async() =>{
-      const getData = await databaseGetAll("Project","","editTime","desc",false,3);
-      const data = getData.map((index:any)=>{
-        return ({
-          id:index.id,
-          title:index.title,
-          category:index.category,
-          editTime:index.editTime,
-        })
-      })
-      setProjectData(data);
-    }
-    // 抓取部落格前三
-    const getBlogData = async() =>{
-      const getData = await databaseGetAll("Blog","","editTime","desc",false,3);
-      const data = getData.map((index:any)=>{
-        return({
-          id:index.id,
-          title:index.title,
-          category:index.category,
-          editTime:index.editTime,
-        })
-      }) 
-      setBlogData(data);
-    }
-
-    getProjectData();
-    getBlogData();
-
-  },[])
-
-  useEffect(()=>{
-    if(projectData.length === 0)return ;
-    if(projectDivRef.current){
-      let projectDataLen = projectDivRef.current.querySelectorAll(`.${Style.projectCard}`).length;
-      console.log(`projectDataLen = ${projectDataLen}`)
-    }
-    // 開啟監聽
-    // window.addEventListener()
-  },[projectData])
-
-  useEffect(()=>{
-
-  },[])
-
-  useEffect(()=>{
-    if(blogData.length === 0)return;
-    console.log(blogData)
-  },[blogData])
 
   return (
       <main className={`${Style.main}`}>
           <IndexFirstComponent/>
           <div id="secIndex" className={Style.aboutDiv}>
               <h2>個人介紹</h2>
-              
               <div className={Style.aboutMeDiv}>
                 <img className={Style.headImg} src="/index/self.jpg"></img>
                 <p>學無止盡，每一天都比昨天更進步</p>

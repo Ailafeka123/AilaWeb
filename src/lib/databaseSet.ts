@@ -6,7 +6,7 @@ import { collection,addDoc,doc,setDoc } from "firebase/firestore";
 type InputMod = "Auth"|"Blog"|"Project"|"BlogAns"|"BlogAnsMessage";
 type inputData = {
     // blug:string|null,project:string|null,BlogAns:string|null,BlogAnsMessage:string|null,
-    "Auth":{id:string,email:string|null,level:string},
+    "Auth":{id:string,email:string|null,level:string,blogMessage:string[],},
     "Blog":{title:string,userId:string,creatTime:string,editTime:string,content:string,complete:boolean,category:string[],searchKey:string[]},
     "Project":{title:string,userId:string,creatTime:string,editTime:string,content:string,complete:boolean,category:string[],searchKey:string[]},
     "BlogAns":{userId:string,BlogID:string,creatTime:string,editTime:string,content:string},

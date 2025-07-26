@@ -189,6 +189,7 @@ export default function IndexTriComponent({moduleType,idName}:indexProps){
                 if(Math.abs(downX - moveX) <= 30 ){
                     // 回到原本節點 0.1s再開移動事件，因為基本的transition設定0.1s
                     projectRef.current.classList.add(Style[lestStyleString]);
+                    ClickRef.current = true;
                     setTimeout(()=>{
                         projectRef.current?.classList.remove(Style.moving);
                         document.addEventListener("mousedown",MouseDownFuc);

@@ -62,7 +62,8 @@ export default function SelfDataComponent(){
                         const dataInput = {
                             id:user.uid,
                             email:user.email || null,
-                            level:"guest"
+                            level:"guest",
+                            blogMessage:[],
                         }
                         await databaseSet("Auth",dataInput);
                         setDataUse(userData);

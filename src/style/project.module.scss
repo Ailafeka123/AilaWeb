@@ -16,10 +16,30 @@
         @media(min-width:768px){
             flex-direction: row;
         }
-        input{
-            border: var(--foreground) 2px solid;
-            border-radius: 8px;
-            padding:8px 4px 8px 16px;
+        div{
+            width: auto;
+        }
+        .searchBox{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            label{
+                position: absolute;
+            }
+            input{
+                border: var(--foreground) 2px solid;
+                border-radius: 8px;
+                padding:8px 4px 8px 16px;
+            }
+        }
+        .sortDiv{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
         }
         button{
             background-color: var(--tagcolor);

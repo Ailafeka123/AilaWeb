@@ -54,8 +54,11 @@
                     background-color: var(--background-2);
                     border-radius:  8px;
                     padding: 4px 8px;
-                    cursor: pointer;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
                     &:hover{
+                        cursor: pointer;
                         background-color: var(--background-3);
                     }
                     &:nth-child(1){
