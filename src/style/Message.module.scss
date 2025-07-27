@@ -1,5 +1,169 @@
-.messageBox{
+.messageListDiv{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    background-color: var(--background-2);
+    gap: 8px;
+    margin-top: 24px;
+    .messageListTatal{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding:16px;
+    }
+    .messageListCard{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        .messageListCardHeader{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding:16px 8px;
+            background-color: var(--background-1);
+            width: 100%;
+            @media(min-width:425px){
+                flex-direction: row;
+            }
+            .messageListCardUser{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: start;
+                @media(min-width: 768px){
+                    flex-direction: row;
+                }
+            }
+            .messageListCardTimespan{
+                font-size: 14px;
+                color:var(--foreground-2);
+                margin-left:16px;
+            }
+            .messageListCardEditDiv{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+                width: auto;
+                .messageListCardEditButton{
+                    padding:8px;
+                    background-color: var(--tagcolor-2);
+                    border-radius: 8px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: var(--tagcolor);
+                    }
+                }
+                .messageListCardDeleteButton{
+                    padding:8px;
+                    background-color: var(--error-2);
+                    border-radius: 8px;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: var(--error);
+                    }
+                }
+            }
+            
+        }
+        .messageListCardContent{
+            display: flex;
+            align-content: center;
+            justify-content: start;
+            padding:16px 8px;
+        }
+    }
+}
+
+
+
+
+
+.messageBox{
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: 24px;
+    min-height: 300px;
+    background-color: var(--background-2);
+    .messageHead{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap:16px;
+        width: 100%;
+        min-height: 60px;
+        background-color: var(--background-1);
+        padding:16px 8px;
+
+        p{
+            padding: 0;
+        }
+        .messageWelcome{
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            @media(min-width: 768px){
+                flex-direction: row;
+            }
+        }
+    }
+    .messageTextarea{
+        box-sizing: border-box;
+        width: 95%;
+        min-height: 180px;
+        padding: 8px 16px;
+        border: 2px solid var(--foreground);
+        margin:16px
+    }
+    .messageFooter{
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding:16px 8px;
+        width: 100%;
+        height: 60px;
+        background-color:var(--background-1);
+        button{
+            background-color: var(--tagcolor-2);
+            padding:8px 16px;
+            border-radius: 8px;
+            &:hover{
+                cursor: pointer;
+                background-color: var(--tagcolor-1);
+            }
+        }
+    }
+
+
+
+    .nonLoginDiv{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: rgba(255, 255, 255,0.1);
+        &:hover{
+            cursor: not-allowed;
+        }
+        &.loginHidden{
+            display: none;
+        }
+    }
+
 }

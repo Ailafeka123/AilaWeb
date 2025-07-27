@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect,Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import Style from "@/style/projectShow.module.scss";
 
@@ -9,17 +9,19 @@ import databaseGet from "@/lib/databaseGet";
 // 相關建議
 // import { databaseGetAll } from "@/lib/databaseGetAll";
 import { markDownChange } from "@/lib/markDownChange";
-
+import Message from "@/component/Message";
 
 
 // 捕捉id
-function GetId( { onChangeSet } : {onChangeSet : (id:string) => void;}){
+function GetId( { onChangeSet, onPathSet } : {onChangeSet : (id:string) => void, onPathSet : (path:string) => void}){
+    const pathName = usePathname();
     const searchParms = useSearchParams();
     const getidString = searchParms.get("id");
     useEffect(()=>{
         if(getidString){
             onChangeSet(getidString);
         }
+        onPathSet(pathName)
     },[])
     return <></>;
 }
@@ -38,6 +40,7 @@ type projectDataList = {
 
 export default function ProjectShowComponent(){
     const router = useRouter();
+    const [pathName,setPathName ] = useState<string>("");
     const [projectId,setProjectId] = useState<string>("")
     const [projectData ,setProjectData] = useState<projectDataList>({
         title:"",
@@ -100,9 +103,10 @@ export default function ProjectShowComponent(){
     return(
     <main className={Style.main}>
         <Suspense>
-            <GetId onChangeSet={setProjectId}/>
+            <GetId onChangeSet={setProjectId} onPathSet={setPathName}/>
         </Suspense>
         <ShowData/>
+        <Message blogId={projectId} method="Project"/>
     </main>
     )
 

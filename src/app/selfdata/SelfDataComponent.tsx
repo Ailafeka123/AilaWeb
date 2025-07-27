@@ -149,7 +149,7 @@ export default function SelfDataComponent(){
                             <h2>請再次輸入密碼</h2>
                             <input type="text" value={reprovidePassword} onChange = {(e)=>{checkInputReprovidePassword(e)}} placeholder=" "></input>
                             <span className={`${reprovideError === "" ? Style.hidden : Style.error}`}>{reprovideError}</span>
-                            <button type = "button" onClick={()=>{secProvide()}} >確認</button>
+                            <button type = "button" className={Style.checkButton} onClick={()=>{secProvide()}} >確認</button>
                         </div>
                     </div>
                 </div>

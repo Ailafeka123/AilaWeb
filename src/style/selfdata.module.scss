@@ -97,6 +97,13 @@
             .error{
                 color: red;
             }
+            .checkButton{
+                width: 95%;
+                margin: 16px;
+                @media(min-width: 768px){
+                    width: 80%;
+                }
+            }
         }
     }
     input{

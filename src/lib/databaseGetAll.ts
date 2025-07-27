@@ -1,6 +1,5 @@
 "use client";
 
-import { tree } from "next/dist/build/templates/app-page";
 import { db } from "./database";
 import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
 

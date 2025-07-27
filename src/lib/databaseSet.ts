@@ -1,15 +1,18 @@
 "use client";
 import { db } from "./database";
 import { collection,addDoc,doc,setDoc } from "firebase/firestore";
-
-
-type InputMod = "Auth"|"Blog"|"Project"|"BlogAns"|"BlogAnsMessage";
+// 第一個為對哪篇部落或文章的ID去回覆，第二個為建立了那些回復訊息。
+type AuthBlogDataList = {
+    BlogId:string,
+    MessageId:string[],
+}
+type InputMod = "Auth"|"Blog"|"Project"|"BlogMessage"|"BlogAnsMessage";
 type inputData = {
     // blug:string|null,project:string|null,BlogAns:string|null,BlogAnsMessage:string|null,
-    "Auth":{id:string,email:string|null,level:string,blogMessage:string[],},
+    "Auth":{id:string,email:string|null,level:string,blogMessage:AuthBlogDataList[],},
     "Blog":{title:string,userId:string,creatTime:string,editTime:string,content:string,complete:boolean,category:string[],searchKey:string[]},
     "Project":{title:string,userId:string,creatTime:string,editTime:string,content:string,complete:boolean,category:string[],searchKey:string[]},
-    "BlogAns":{userId:string,BlogID:string,creatTime:string,editTime:string,content:string},
+    "BlogMessage":{userId:string,BlogID:string,creatTime:string,editTime:string,content:string},
     "BlogAnsMessage":{userId:string,BlogAnsID:string,creatTime:string,editTime:string,content:string},
 }
 // mod = "資料庫" data="內容"
