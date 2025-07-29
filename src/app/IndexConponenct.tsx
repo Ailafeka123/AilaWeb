@@ -1,9 +1,7 @@
 "use client";
 
 import Style from '@/style/index.module.scss';
-import { useState,useEffect,useRef,useMemo } from "react";
 import { useRouter } from 'next/navigation';
-import { databaseGetAll } from '@/lib/databaseGetAll';
 
 import IndexFirstComponent from '@/component/index/IndexFirstComponent';
 import IndexTriComponent from '@/component/index/IndexTriComponent';
