@@ -47,7 +47,6 @@ export async function databaseGetAll(method:string,searchKey:string,orderName:"t
 
     try{
         const dataList = await getDocs(q);
-        console.log("取得資料中");
         const dataGetAll:any[] = []
         dataList.forEach(rows=>{
             const data =  rows.data();

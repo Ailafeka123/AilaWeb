@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect,Suspense } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, useRouter,usePathname } from "next/navigation";
 
 import Style from "@/style/projectShow.module.scss";
 
@@ -9,19 +9,21 @@ import databaseGet from "@/lib/databaseGet";
 // 相關建議
 // import { databaseGetAll } from "@/lib/databaseGetAll";
 import { markDownChange } from "@/lib/markDownChange";
+
 import Message from "@/component/Message";
 
 
 // 捕捉id
-function GetId( { onChangeSet, onPathSet } : {onChangeSet : (id:string) => void, onPathSet : (path:string) => void}){
+function GetId( { onChangeSet, onPathSet } : {onChangeSet : (id:string) => void, onPathSet:(path:string)=>void}){
     const pathName = usePathname();
+    // console.log(`pathName = ${pathName}`);
     const searchParms = useSearchParams();
     const getidString = searchParms.get("id");
     useEffect(()=>{
         if(getidString){
             onChangeSet(getidString);
         }
-        onPathSet(pathName)
+        onPathSet(pathName);
     },[])
     return <></>;
 }
@@ -36,11 +38,9 @@ type projectDataList = {
 }
 
 
-
-
-export default function ProjectShowComponent(){
+export default function BlogShowComponent(){
     const router = useRouter();
-    const [pathName,setPathName ] = useState<string>("");
+    const [pathName ,setPathName] = useState("");
     const [projectId,setProjectId] = useState<string>("")
     const [projectData ,setProjectData] = useState<projectDataList>({
         title:"",
@@ -53,7 +53,7 @@ export default function ProjectShowComponent(){
     useEffect(()=>{
         if(projectId){
             const getdata = async()=>{
-                const data = await databaseGet("Project",projectId);
+                const data = await databaseGet("Blog",projectId);
                 if(data){
                     const changeText :string = await markDownChange(data.content);
                     const dataList : projectDataList = {
@@ -85,7 +85,7 @@ export default function ProjectShowComponent(){
                         <span>{`分類:`}</span>
                         {projectData.category.length && projectData.category.map((index,key)=>{
                             return(
-                                <span key = {key} onClick={()=>{router.push(`/project?searchKey=${index.toLowerCase()}`)}}>{index}</span>
+                                <span key = {key} onClick={()=>{router.push(`/blogdata?searchKey=${index.toLowerCase()}`)}}>{index}</span>
                             )
                         })}
                     </div>
@@ -106,8 +106,7 @@ export default function ProjectShowComponent(){
             <GetId onChangeSet={setProjectId} onPathSet={setPathName}/>
         </Suspense>
         <ShowData/>
-        <Message blogId={projectId} method="Project" blogTitle={projectData.title}/>
+        <Message blogId={projectId} method="Blog" blogTitle={projectData.title}/>
     </main>
     )
-
 }

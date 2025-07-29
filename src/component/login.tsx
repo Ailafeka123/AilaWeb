@@ -193,7 +193,7 @@ const Login = forwardRef<HTMLDivElement, LoginProps>( (props, ref) => {
                         <input type={loginPasswordShow===true?"text":"password"}  onChange={(e)=>{changePassword(e);}} value={loginPassword} placeholder=" " required></input>
                         <label>密碼</label>
                         <button type="button" ref={LoginPasswordRef} className={Style.eyeButton} onClick={(e)=>{setLoginPasswordShow(!loginPasswordShow)}}>
-                            <Image src={loginPasswordShow===true?"eye-show-light.svg":"eye-hidden-light.svg"} alt="eye" width={25} height={25}></Image>
+                            <Image src={loginPasswordShow===true?"/eye-show-light.svg":"/eye-hidden-light.svg"} alt="eye" width={25} height={25}></Image>
                         </button>
                         <button type="button" onClick={(e)=>{setLoginPassword(""); setErrorMessage("");}}>清除</button>
                     </div>

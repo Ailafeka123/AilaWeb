@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    background-color: var(--background-2);
+    background-color: var(--background-1);
     gap: 8px;
     margin-top: 24px;
     .messageListTatal{
@@ -13,6 +13,7 @@
         justify-content: center;
         width: 100%;
         padding:16px;
+        background-color: var(--background-2);
     }
     .messageListCard{
         display:flex;
@@ -20,6 +21,11 @@
         align-items: center;
         justify-content: center;
         width: 100%;
+        padding:0 0 16px 0;
+        background-color: var(--background-1);
+        @media(min-width:768px){
+            padding:0 16px 16px 16px;
+        }
         .messageListCardHeader{
             display: flex;
             flex-direction: column;
@@ -77,13 +83,15 @@
             align-content: center;
             justify-content: start;
             padding:16px 8px;
+            width: 100%;
+            background-color: var(--background-2);
+            p{
+                padding: 0;
+                white-space: pre-wrap;
+            }
         }
     }
 }
-
-
-
-
 
 .messageBox{
     position: relative;
@@ -164,6 +172,133 @@
         &.loginHidden{
             display: none;
         }
+        p{
+            font-size: 40px;
+        }
     }
 
 }
+
+.editDivBackground{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    &.editDivBackgroundHidden{
+        display: none;
+    }
+    .editDiv{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 100%;
+        height: 50%;
+        min-height: 200px;
+        background-color:var(--background-2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding:16px;
+        .editTitle{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .editInputText{
+            width: 95%;
+            background-color:var(--background-2);
+            padding:16px;
+            height: 50%;
+            min-height: 100px;
+            border: 2px solid var(--foreground);
+            border-radius: 8px;
+        }
+        .editButtonDiv{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            button{
+                padding:8px 16px;
+                background-color: var(--tagcolor-2);
+                border-radius: 8px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--tagcolor);
+                }
+            }
+        }
+    }
+}
+
+
+
+.deleteCheckDivBackground{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0,0.5);
+    &.deleteCheckDivBackgroundHidden{
+        display: none;
+    }
+    .deleteCheckDiv{
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 300px;
+        height: 200px;
+        border: 2px solid var(--foreground);
+        border-radius: 8px;
+        background-color: var(--background-2);
+        .deleteCheckDivText{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .deleteCheckButtonDiv{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 16px;
+            
+            border-radius: 8px;
+            .deleteCheckDivConfirmButton{
+                padding:8px 16px;
+                background-color: var(--tagcolor-2);
+                border-radius: 8px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--tagcolor);
+                }
+            }
+            .deleteCheckDivDeleteButton{
+                padding:8px 16px;
+                background-color: var(--error-2);
+                border-radius: 8px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--error);
+                }
+            }
+        }
+    }
+}
+
+
+

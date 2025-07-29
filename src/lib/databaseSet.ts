@@ -4,6 +4,8 @@ import { collection,addDoc,doc,setDoc } from "firebase/firestore";
 // 第一個為對哪篇部落或文章的ID去回覆，第二個為建立了那些回復訊息。
 type AuthBlogDataList = {
     BlogId:string,
+    BlogMethod:"Blog"|"Project",
+    BlogTilte:string,
     MessageId:string[],
 }
 type InputMod = "Auth"|"Blog"|"Project"|"BlogMessage"|"BlogAnsMessage";
@@ -25,10 +27,8 @@ export default async function databaseSet<K extends InputMod>(mod:K , data:input
             await setDoc(docRef,otherData);
         }else{
             const newID = await addDoc(collection(db,mod),data);
-            console.log(`newID = ${newID}`);
             return newID.id;
         }
-        console.log("新增完成")
         return null;
     }catch(e : any){
         console.error("增新失敗",e);
