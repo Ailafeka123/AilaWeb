@@ -141,7 +141,7 @@ export default function SelfDataComponent(){
                         <button type="button" onClick={()=>{router.push("/selfdata/BlogList")}}>編輯文章</button>
                         <button type="button" onClick={() =>{router.push('/selfdata/editAuth')}}>編輯帳號</button>
                     </>:null}
-                    <button>相關留言</button>
+                    <button onClick={()=>{router.push(`/selfdata/MessageList`)}}>相關留言</button>
                     <button type = "button" onClick={()=>{setReprovideDiv(true)}}>刪除帳號</button>
                     <div className={`${reprovideDiv === true ? Style.secProvide : Style.hidden}`}>
                         <div className={`${Style.provide}`}>

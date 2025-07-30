@@ -1,0 +1,77 @@
+
+.messageListShowDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-2);
+    padding:16px;
+    gap:16px;
+    &.loaddingDiv{
+        p{
+            @keyframes loaddingAnimation {
+                0%{
+                    transform: translateY(0); 
+                }
+                12%{
+                    transform: translateY(-50%);
+                }
+                25%{
+                    transform: translateY(0);
+                }
+                37%{
+                    transform: translateY(50%);
+                }
+                50%{
+                    transform: translateY(0);
+                }
+                100%{
+                    transform: translateY(0);
+                }
+            }
+            span{
+                display: inline-block;
+            }
+            @for $i from 1 through 8{
+                span:nth-of-type(#{$i}){
+                    animation: loaddingAnimation 2s calc(0.1s * $i) linear infinite;
+                }
+            }
+        }
+    }
+    .messageListDataCard{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap:8px;
+        background-color: var(--background-3);
+        border-radius: 8px;
+        padding: 8px;
+        &:hover{
+            cursor: pointer;
+            background-color: var(--background-4);
+        }
+        .messageListDataCardTitle{
+            p{
+                text-align: center;
+                padding: 0;
+            }
+        }
+        .messageListDataCardContent{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap:8px;
+            @media(min-width:768px){
+                flex-direction: row;
+            }
+            p{
+                padding: 0;
+            }
+        }
+    }
+
+
+}
