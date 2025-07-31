@@ -5,7 +5,8 @@
     align-items: center;
     justify-content: start;
     min-height: 100vh;
-    background-color: var(--background-2);
+    background-color: var(--background-1);
+    margin-bottom: 24px;
     img{
         display: flex;
         align-items: center;
@@ -117,13 +118,13 @@
         border: var(--foreground) 2px solid;
         border-radius: 8px;
         padding:8px;
-        background-color: var(--tagcolor);
+        background-color: var(--tagcolor-2);
         @media(min-width:768px){
             width: 300px;
         }
         &:hover{
             cursor: pointer;
-            background-color: var(--tagcolor-1);
+            background-color: var(--tagcolor-3);
         }
     }
 }

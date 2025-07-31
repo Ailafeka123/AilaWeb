@@ -16,12 +16,12 @@
             padding: 4px 16px;
         }
         button{
-            background-color: var(--tagcolor);
+            background-color: var(--tagcolor-2);
             border-radius: 8px;
             padding:8px 16px;
             &:hover{
                 cursor: pointer;
-                background-color: var(--tagcolor-2);
+                background-color: var(--tagcolor-3);
             }
         }
     }
@@ -49,6 +49,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+                border-radius: 8px;
                 &:hover{
                     cursor: pointer;
                     background-color: var(--background-4);
@@ -88,18 +89,18 @@
                     gap: 16px;
                 }
                 button{
-                    background-color: var(--tagcolor);
+                    background-color: var(--tagcolor-2);
                     border-radius: 8px;
                     padding:8px 16px;
                     &:hover{
                         cursor: pointer;
-                        background-color: var(--tagcolor-2);
+                        background-color: var(--tagcolor-3);
                     }
                 }
                 .errorButton{
                     background-color: var(--error);
                     &:hover{
-                     background-color: var(--error-2);
+                     background-color: var(--error-1);
                     }
                 }
             }

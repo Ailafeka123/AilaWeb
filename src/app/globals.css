@@ -11,14 +11,15 @@
   --foreground-2:oklch(27.9% 0.041 260.031);
   --foreground-3:oklch(37.2% 0.044 257.287);
   --foreground-4:oklch(44.6% 0.043 257.281);
-  --error:oklch(64.5% 0.246 16.439);
+
+  --error:oklch(51.4% 0.222 16.935);
   --error-1:oklch(58.6% 0.253 17.585);
-  --error-2:oklch(51.4% 0.222 16.935);
-  --tagcolor:oklch(78.9% 0.154 211.53);
-  --tagcolor-1:oklch(71.5% 0.143 215.221);
-  --tagcolor-2:oklch(60.9% 0.126 221.723);
-  --tagcolor-3:oklch(52% 0.105 223.128);
-  --tagcolor-4:oklch(45% 0.085 224.283);
+  --error-2:oklch(64.5% 0.246 16.439);
+  --tagcolor:oklch(52% 0.105 223.128);
+  --tagcolor-1:oklch(60.9% 0.126 221.723);
+  --tagcolor-2:oklch(71.5% 0.143 215.221);
+  --tagcolor-3:oklch(78.9% 0.154 211.53);
+  --tagcolor-4:oklch(86.5% 0.127 207.078);
 }
 .dark{
   --background: oklch(12.9% 0.042 264.695);
@@ -31,6 +32,11 @@
   --foreground-2:oklch(93.8% 0.127 124.321);
   --foreground-3:oklch(89.7% 0.196 126.665);
   --foreground-4:oklch(84.1% 0.238 128.85);
+  --tagcolor:oklch(45% 0.085 224.283);
+  --tagcolor-1:oklch(52% 0.105 223.128);
+  --tagcolor-2:oklch(60.9% 0.126 221.723);
+  --tagcolor-3:oklch(71.5% 0.143 215.221);
+  --tagcolor-4:oklch(78.9% 0.154 211.53);
 }
 
 @theme inline {

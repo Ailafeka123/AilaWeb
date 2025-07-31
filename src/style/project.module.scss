@@ -1,11 +1,12 @@
 .main{
     width: 100%;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    padding:32px 16px ;
+    padding:24px 16px ;
+    background-color: var(--background-1);
+    margin-bottom:24px;
     .searchDiv{
         display: flex;
         flex-direction: column;
@@ -43,11 +44,11 @@
             gap: 1rem;
         }
         button{
-            background-color: var(--tagcolor);
+            background-color: var(--tagcolor-2);
             border-radius: 8px;
             padding:8px 8px;
             &:hover{
-                background-color: var(--tagcolor-1);
+                background-color: var(--tagcolor-3);
                 cursor: pointer;
             }
         }
@@ -76,12 +77,11 @@
                 align-items: center;
                 justify-content: space-between;
                 gap: 16px;
-                background-color: var(--background-1);
+                background-color: var(--background-3);
                 padding:8px 16px;
                 border-radius: 8px;
-                // transition: backgound 0.2s;
                 &:hover{
-                    background-color: var(--background);
+                    background-color: var(--background-4);
                     cursor: pointer;
                 }
                 @media( min-width: 768px){
@@ -115,7 +115,7 @@
                         border-radius: 8px;
                         padding: 4px 8px;
                         &:first-of-type{
-                            background-color: var(--background-1);
+                            background-color: transparent;
                         }
                     }
                 }

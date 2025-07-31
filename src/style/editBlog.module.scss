@@ -5,6 +5,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: var(--background-1);
+    margin-bottom: 24px;
     .editerArea{
         width: 100vw;
         min-height: 100vh;
@@ -39,12 +41,12 @@
                     width: auto;
                 }
                 select{
-                    background-color: var(--background-2);
+                    background-color: var(--background-3);
                     padding:8px;
                     border-radius: 8px;
                     &:disabled{
                         appearance: none;
-                        background-color: var(--background);
+                        background-color: var(--background-1);
                     }
                 }
                 .changeMode{
@@ -69,11 +71,11 @@
                             left: 0;
                             transition: all 0.5s;
                             transform: translate(-50%,-50%);
-                            background-color: var(--tagcolor);
+                            background-color: var(--tagcolor-3);
                             border-radius: 50%;
                         }
                         &.silderMoveCode{
-                            background-color: var(--tagcolor);
+                            background-color: var(--tagcolor-2);
                             &::before{
                                 content: " ";
                                 transform: translate(calc(30px - 50%),-50%);
@@ -96,6 +98,7 @@
                 width: 100%;
                 height: 90vh;
                 overflow-x: hidden;
+                padding:8px;
             }
             .categoryListDiv{
                 display: flex;
@@ -156,6 +159,7 @@
                     overflow-y: scroll;
                     height: 90vh;
                     border: 2px solid var(--foreground) ;
+                    padding:8px;
                 }
                 .categoryStringDiv{
                     padding:16px;
@@ -193,13 +197,13 @@
         border: var(--foreground) 2px solid;
         border-radius: 8px;
         padding:8px;
-        background-color: var(--tagcolor);
+        background-color: var(--tagcolor-2);
         @media(min-width:768px){
             width: 300px;
         }
         &:hover{
             cursor: pointer;
-            background-color: var(--tagcolor-1);
+            background-color: var(--tagcolor-3);
         }
     }
 }
