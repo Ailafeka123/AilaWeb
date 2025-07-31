@@ -1,0 +1,43 @@
+.editAuthDataBackground{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    &.editHidden{
+        display: none;
+    }
+    .editAuthDataDiv{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 100%;
+        min-height: 300px;
+        background-color: var(--background-2);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+
+        padding:16px;
+        .editAuthDataButtonDiv{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            button{
+                padding: 8px 16px;
+                border-radius: 8px;
+                background-color: var(--tagcolor-2);
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--tagcolor-3);
+                }
+            }
+        }
+        
+    }
+}

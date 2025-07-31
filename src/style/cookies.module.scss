@@ -19,10 +19,10 @@
         height: 30px;
         width: 80px;
         border-radius: 8px;
-        background-color: var(--tagcolor);
+        background-color: var(--tagcolor-2);
         &:hover{
             cursor: pointer;
-            background-color: var(--tagcolor-1);
+            background-color: var(--tagcolor-3);
         }
     }
 }

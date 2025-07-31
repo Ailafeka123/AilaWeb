@@ -1,0 +1,93 @@
+.usersListDataCardDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-2);
+    width: 100%;
+    padding:16px 8px;
+    gap: 16px;
+    
+    @media(min-width:768px){
+        min-width: 768px;
+        width: calc((10/12)*100%);
+        border-radius: 8px;
+        padding:16px;
+    }
+    .userListDataCardTitle{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        
+        background-color: var(--background-3);
+        border-radius: 8px 8px 0 0;
+        
+        span{
+            display: block;
+            flex: 0 0 calc((2/12)*100%);
+            text-align: center;
+            padding:8px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:nth-of-type(1){
+                flex:0 0 calc((3/12)*100%);
+            }
+            &:nth-of-type(5){
+                flex:0 0 calc((3/12)*100%);
+            }
+        }
+
+    }
+    .usersListDataCard{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        background-color: var(--background-2);
+        span{
+            flex: 0 0 calc((2/12)*100%);
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:nth-of-type(1){
+                flex:0 0 calc((3/12)*100%);
+            }
+        }
+        div{
+            width: auto;
+            flex: 0 0 calc((3/12)*100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            @media(min-width:768px){
+                flex-direction: row;
+            }
+            button{
+                padding: 8px 16px;
+                border-radius: 8px;
+            }
+            .clickButton{
+                background-color: var(--tagcolor-2);
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--tagcolor-3);
+                }
+            }
+            .deleteButton{
+                background-color: var(--error-1);
+
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--error-2);
+                }
+            }
+        }
+    }
+}

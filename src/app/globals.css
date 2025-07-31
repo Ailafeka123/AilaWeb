@@ -55,6 +55,7 @@ body {
   font-size: 1rem;
   white-space: normal;
   word-wrap: break-word;
+  word-break: break-word;
   overflow-wrap: break-word;
   
 }
@@ -68,6 +69,7 @@ h1{
   font-size: 24px;
   white-space: normal;
   word-wrap: break-word;
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 h2{

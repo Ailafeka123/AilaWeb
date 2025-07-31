@@ -138,7 +138,7 @@ export default function ProjectComponent(){
                     <input value={searchString} placeholder="請輸入要搜尋的內容" onChange={(e)=>{
                         setSearchString(e.target.value.trim());
                     }}></input>
-                    <button type="button" onClick={()=>{ if(searchStart === false)setSearchStart(true)}} >提交</button>
+                    <button type="button" onClick={()=>{ if(searchStart === false)setSearchStart(true)}} >查詢</button>
                 </div>
                 <div className={Style.sortDiv}>
                     <button type="button" onClick={()=>{setSortMethod(index=>{
