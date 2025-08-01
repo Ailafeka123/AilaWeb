@@ -4,34 +4,77 @@
     align-items: center;
     justify-content: start;
     min-height: 100vh;
-    .search{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        padding: 16px 0;
-        input{
-            border: var(--foreground) 2px solid;
-            border-radius: 8px;
-            padding: 4px 16px;
+    background-color: var(--background-1);
+    margin-bottom: 24px;
+    .searchDiv{
+        width: 100%;
+        @media(min-width:768px){
+            min-width: 768px;
+            width:calc((10/12)*100%);
         }
-        button{
-            background-color: var(--tagcolor-2);
-            border-radius: 8px;
-            padding:8px 16px;
-            &:hover{
-                cursor: pointer;
-                background-color: var(--tagcolor-3);
+        .search{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px 0;
+            @media(min-width:768px){
+                flex-direction: row;
+                gap: 0;
+            }
+            .searchInputDiv{
+                flex: 0 0 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+                input{
+                    border: var(--foreground) 2px solid;
+                    border-radius: 8px;
+                    padding: 4px 16px;
+                    width: 50%;
+                }
+                button{
+                    width: 25%;
+                }
+            }
+            
+            .sortDiv{
+                flex: 0 0 50%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                gap: 16px;
+                button{
+                    width: 40%;
+                }
+                
+            }
+            button{
+                background-color: var(--tagcolor-2);
+                border-radius: 8px;
+                padding:8px 16px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--tagcolor-3);
+                }
             }
         }
     }
+
     .article{
-        width: 90%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        
+        @media(min-width:768px){
+            padding:16px;
+        }
         .cardTitle{
             width: 100%;
             display: flex;
@@ -40,16 +83,25 @@
             justify-content: space-around;
             background-color: var(--background-3);
             border-radius: 8px 8px 0 0;
+            @media(min-width:768px){
+                min-width:768px;
+                width:calc((10/12)*100%);
+            }
             span{
-                width: 150px;
+                display: block;
+                width: 100%;
+                padding:8px;
                 text-align: center;
             }
             .sortTitle{
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 border-radius: 8px;
+                @media(min-width:768px){
+                    flex-direction: row;
+                }
                 &:hover{
                     cursor: pointer;
                     background-color: var(--background-4);
@@ -62,9 +114,18 @@
             
         }
         .cardShowDiv{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            gap: 8px;
             width:100%;
-            background-color: var(--background-2);
+            
             border-radius: 0px 0px 8px 8px;
+            @media(min-width:768px){
+                min-width: 768px;
+                width: calc((10/12)*100%);
+            }
             .card{
                 width: 100%;
                 display: flex;
@@ -73,7 +134,7 @@
                 align-items: center;
                 justify-content: space-around;
                 padding: 8px 0;
-                
+                background-color: var(--background-2);
                 span{
                     width: 150px;
                     text-align: center;
@@ -83,10 +144,13 @@
                 .cardEditDiv{
                     width: 150px;
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     gap: 16px;
+                    @media(min-width:768px){
+                        flex-direction: row;
+                    }
                 }
                 button{
                     background-color: var(--tagcolor-2);

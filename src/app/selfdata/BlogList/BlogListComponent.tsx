@@ -217,26 +217,31 @@ export default function BlogListComponent(){
 
     return(
     <main className={`${Style.main}`}>
-            <h2>{searchText!==""&&`當前搜尋:${searchText}`}</h2>
-        <div>
+        <h2>{searchText!==""&&`當前搜尋:${searchText}`}</h2>
+        <div className={Style.searchDiv}>
             <search className={`${Style.search}`}>
-                <label > 搜尋:</label>
-                <input value={searchInput} onChange={(e)=>{
-                    setSearchInput(e.target.value)
-                }}></input>
-                <button type="button" onClick={()=>{
-                    setSearchUse(true);
-                }} >進行搜尋</button>
-                <button type="button" onClick={()=>{router.push(`/selfdata/editBlog`)}}>建立新資料</button>
-                <button type="button" onClick={()=> {setSearchMethod(index=>{
-                    if(index === 0){
-                        return 1
-                    }else if(index === 1){
-                        return 2
-                    }else{
-                        return 0
-                    }
-                    })}} >{searchMethod===0?"顯示全部":searchMethod === 1?"僅顯示作品":"僅顯示部落格"}</button>
+                <div className={Style.searchInputDiv}>
+                    <label > 搜尋:</label>
+                    <input value={searchInput} onChange={(e)=>{
+                        setSearchInput(e.target.value)
+                    }}></input>
+                    <button type="button" onClick={()=>{
+                        setSearchUse(true);
+                    }} >進行搜尋</button>
+                </div>
+
+                <div className={Style.sortDiv}>
+                    <button type="button" onClick={()=>{router.push(`/selfdata/editBlog`)}}>建立新資料</button>
+                    <button type="button" onClick={()=> {setSearchMethod(index=>{
+                        if(index === 0){
+                            return 1
+                        }else if(index === 1){
+                            return 2
+                        }else{
+                            return 0
+                        }
+                        })}} >{searchMethod===0?"顯示全部":searchMethod === 1?"僅顯示作品":"僅顯示部落格"}</button>
+                </div>
             </search>
         </div>
         <article className={Style.article}>

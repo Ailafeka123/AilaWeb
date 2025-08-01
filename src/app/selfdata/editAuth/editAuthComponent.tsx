@@ -11,12 +11,15 @@ import { collection, query, where, getDocs, orderBy, limit } from "firebase/fire
 import Style from "@/style/selfData/editAuth/editAuthComponent.module.scss";
 
 import { EditAuthData } from "@/component/selfData/editAuth/editAuthData";
+import AlterComponent from "@/component/alterComponent";
+import { authMessageDelete } from "@/lib/AuthMessageDelete";
+
 
 type blogMessageDataType ={
-    BlogTitle:string,
-    BlogID:string,
+    BlogTilte:string,
+    BlogId:string,
     method:"Project" | "Blog",
-    MessageID:string[],
+    MessageId:string[],
 }
 
 type usersDataType ={
@@ -46,6 +49,16 @@ export function EditAuthComponent(){
 
     // 是否開啟修改Auth內容
     const [editDivState, setEditDivState] = useState<boolean>(false);
+
+    // 刪除確認1 [視窗開啟狀態,id]
+    const [deleteCheck1, setDeleteCheck1] = useState<[boolean,string]>([false,""]);
+
+    // 刪除確認2 [視窗開啟狀態,id]
+    const [deleteCheck2, setDeleteCheck2] = useState<[boolean,string]>([false,""]);
+
+    // 刪除警告提示1
+    const [deleteAlterDiv1,setDeleteAlterDiv1] = useState<[boolean,string]> ([false,""]);
+
 
 
     // 進行登入抓取
@@ -84,10 +97,6 @@ export function EditAuthComponent(){
 
     },[loginState[0]])
 
-    useEffect(()=>{
-        if(usersDataList.length === 0) return;
-        console.log(usersDataList);
-    },[usersDataList])
 
     const UsersListDataShow = () =>{
         const temp = useMemo(()=>{
@@ -109,7 +118,8 @@ export function EditAuthComponent(){
                 <article className={Style.usersListDataCard} key={index.id}>
                     <span>{index.id}</span>
                     <span>{index.email}</span>
-                    <span>{index.level === "AilaEditer" ? "管理員" : "訪客"}</span>
+                    <span>{index.id ===loginState[1]? "使用者":
+                    index.level === "AilaEditer" ? "管理員" : "訪客"}</span>
                     <span>{index.blogMessage.length}</span>
                     <div>
                         <button type="button" className={Style.clickButton} onClick={()=>{
@@ -120,8 +130,8 @@ export function EditAuthComponent(){
                             blogMessage:index.blogMessage,
                         })
                         setEditDivState(true);
-                        }}>修改</button>
-                        <button type="button" className={Style.deleteButton}>
+                        }}>查看</button>
+                        <button type="button" className={Style.deleteButton} onClick={()=>{setDeleteCheck1([true,index.id])}}>
                             刪除
                         </button>
                     </div>
@@ -142,12 +152,61 @@ export function EditAuthComponent(){
             </section>
         )
     }
-
+    // 刪除帳號的留言
+    const deleteAuthMessage = (id:string) =>{
+        const deleteAuthData = usersDataList.find(index=>index.id===id);
+        const deleteAuth = async()=>{
+            if(deleteAuthData){
+                const messageClear:boolean = await authMessageDelete(deleteAuthData);
+                if(messageClear){
+                    setDeleteAlterDiv1([true,"留言刪除成功"])
+                }
+            }
+        }
+        deleteAuth();
+    }
 
     return (
         <>
             <UsersListDataShow/>
             <EditAuthData authDataList={editData} onAuthDataList={setEditData} openState={editDivState} onOpenState={setEditDivState}/>
+
+            <div className={`${Style.deleteCheckBackgroundDiv} ${deleteCheck1[0] === false ? Style.deleteCheckHidden:""}`}>
+                <div className={`${Style.deleteCheckDiv}`}>
+                    <div className={`${Style.deleteCheckTextDiv}`}>
+                        <p>是否確定要刪除此帳號留言?</p>
+                        <p className={`${Style.errorText}`}>此步驟不可復原</p>
+                        <p>id:{deleteCheck1[1]}</p>
+                    </div>
+                    <div className={`${Style.deleteCheckButtonDiv}`}>
+                        <button type="button" className={`${Style.errorButton}`} onClick={()=>{
+                            setDeleteCheck2([true,deleteCheck1[1]])
+                            setDeleteCheck1([false,""]);
+                            }}>確定</button>
+                        <button type="button" onClick={()=>{setDeleteCheck1([false,""])}}>取消</button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`${Style.deleteCheckBackgroundDiv} ${deleteCheck2[0] === false ? Style.deleteCheckHidden:""}`}>
+                <div className={`${Style.deleteCheckDiv}`}>
+                    <div className={`${Style.deleteCheckTextDiv}`}>
+                        <p>真的是否確定要刪除此帳號留言?</p>
+                        <p className={`${Style.errorText}`}>此步驟不可復原</p>
+                        <p>id:{deleteCheck2[1]}</p>
+                    </div>
+                    <div className={`${Style.deleteCheckButtonDiv}`}>
+                        <button type="button" className={`${Style.errorButton}`} onClick={()=>{
+                            deleteAuthMessage(deleteCheck2[1]);
+                            setDeleteCheck2([false,""])
+                        }}>確定</button>
+                        <button type="button" onClick={()=>{setDeleteCheck2([false,""])}}>取消</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <AlterComponent openState={deleteAlterDiv1[0]} onOpenState={setDeleteAlterDiv1} alterMessage={deleteAlterDiv1[1]}/>
         </>
     )
 }
