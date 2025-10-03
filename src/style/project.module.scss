@@ -90,6 +90,9 @@
             background-color: var(--background-2);
             padding:16px;
             gap: 16px;
+            a{
+                width: 100%;
+            }
             .card{
                 width: 100%;
                 display: flex;

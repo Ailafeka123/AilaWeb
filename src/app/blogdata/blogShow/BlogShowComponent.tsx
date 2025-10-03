@@ -11,7 +11,7 @@ import databaseGet from "@/lib/databaseGet";
 import { markDownChange } from "@/lib/markDownChange";
 
 import Message from "@/component/Message";
-
+import Link from "next/link";
 
 // 捕捉id
 function GetId( { onChangeSet, onPathSet } : {onChangeSet : (id:string) => void, onPathSet:(path:string)=>void}){
@@ -85,7 +85,9 @@ export default function BlogShowComponent(){
                         <span>{`分類:`}</span>
                         {projectData.category.length && projectData.category.map((index,key)=>{
                             return(
-                                <span key = {key} onClick={()=>{router.push(`/blogdata?searchKey=${index.toLowerCase()}`)}}>{index}</span>
+                                <Link href={`/blogdata?searchKey=${index.toLowerCase()}`}>
+                                    <span key = {key} >{index}</span>
+                                </Link>
                             )
                         })}
                     </div>

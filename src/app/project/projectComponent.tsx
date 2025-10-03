@@ -2,7 +2,7 @@
 
 import { useState, useEffect,Suspense , useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-
+import Link from "next/link";
 
 import Style from '@/style/project.module.scss';
 
@@ -100,25 +100,27 @@ export default function ProjectComponent(){
 
         const data = filterData.map((index,key)=>{
             return (
-                <div key = {key} className={Style.card} onClick={()=>{
-                    router.push(`/project/projectShow?id=${index.id}`);
-                }}>
-                    <div>
-                        <h2>{index.title}</h2>
-                        <div className={Style.categoryDiv}>
-                            <span>分類:</span>
-                            {index.category.map((categoryIndex,categoryKey)=>{
-                                return (
-                                <span key={`span-${categoryKey}`}>
-                                    {categoryIndex}
-                                </span>)
-                            })}
+                <Link href={`/project/projectShow?id=${index.id}`}>
+                    <div key = {key} className={Style.card} onClick={()=>{
+                        router.push(``);
+                    }}>
+                        <div>
+                            <h2>{index.title}</h2>
+                            <div className={Style.categoryDiv}>
+                                <span>分類:</span>
+                                {index.category.map((categoryIndex,categoryKey)=>{
+                                    return (
+                                    <span key={`span-${categoryKey}`}>
+                                        {categoryIndex}
+                                    </span>)
+                                })}
+                            </div>
+                        </div>
+                        <div className={Style.timeDiv}>
+                            <span>最後編輯時間:{index.editTime}</span>
                         </div>
                     </div>
-                    <div className={Style.timeDiv}>
-                        <span>最後編輯時間:{index.editTime}</span>
-                    </div>
-                </div>
+                </Link>
             )
         })
         return (

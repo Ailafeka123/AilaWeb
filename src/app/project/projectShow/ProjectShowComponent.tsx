@@ -10,6 +10,7 @@ import databaseGet from "@/lib/databaseGet";
 // import { databaseGetAll } from "@/lib/databaseGetAll";
 import { markDownChange } from "@/lib/markDownChange";
 import Message from "@/component/Message";
+import Link from "next/link";
 
 
 // 捕捉id
@@ -85,7 +86,9 @@ export default function ProjectShowComponent(){
                         <span>{`分類:`}</span>
                         {projectData.category.length && projectData.category.map((index,key)=>{
                             return(
-                                <span key = {key} onClick={()=>{router.push(`/project?searchKey=${index.toLowerCase()}`)}}>{index}</span>
+                                <Link href={`/project?searchKey=${index.toLowerCase()}`}>
+                                    <span key = {key} >{index}</span>
+                                </Link>
                             )
                         })}
                     </div>

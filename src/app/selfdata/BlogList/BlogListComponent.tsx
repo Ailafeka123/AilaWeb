@@ -8,6 +8,7 @@ import Style from "@/style/blogList.module.scss";
 import { databaseGetAll } from "@/lib/databaseGetAll";
 import { databaseDelete } from "@/lib/databaseDelete";
 
+import Link from "next/link";
 
 type showData ={
     id:string,
@@ -172,7 +173,9 @@ export default function BlogListComponent(){
                     <span>{index.editTime}</span>
                     <span>{index.complete?"是":"否"}</span>
                     <div className={Style.cardEditDiv}>
-                        <button type="button" onClick={()=>{router.push(`/selfdata/editBlog?id=${index.id}&mod=${index.method}`)}} >修正</button>
+                        <Link href={`/selfdata/editBlog?id=${index.id}&mod=${index.method}`}>
+                            <button type="button"  >修正</button>
+                        </Link>
                         <button type="button" className={Style.errorButton} onClick={()=>{
                             setCheckDeleteDiv(true);
                             deleteDataRef.current = [index.method,index.id]
@@ -231,7 +234,9 @@ export default function BlogListComponent(){
                 </div>
 
                 <div className={Style.sortDiv}>
-                    <button type="button" onClick={()=>{router.push(`/selfdata/editBlog`)}}>建立新資料</button>
+                    <Link href={`/selfdata/editBlog`}>
+                        <button type="button" >建立新資料</button>
+                    </Link>
                     <button type="button" onClick={()=> {setSearchMethod(index=>{
                         if(index === 0){
                             return 1

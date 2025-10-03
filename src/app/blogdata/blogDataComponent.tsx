@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Style from '@/style/project.module.scss';
 
 import { databaseGetAll } from "@/lib/databaseGetAll";
+import Link from "next/link";
 
 function GetSearchString( { onChangeSet,toSearch } : {onChangeSet : (searchKey:string) => void; toSearch:(active:boolean)=>void}){
     const searchParms = useSearchParams();
@@ -101,25 +102,26 @@ export default function BlogDataComponent(){
 
         const data = filterData.map((index,key)=>{
             return (
-                <div key = {key} className={Style.card} onClick={()=>{
-                    router.push(`/blogdata/blogShow?id=${index.id}`);
-                }}>
-                    <div>
-                        <h2>{index.title}</h2>
-                        <div className={Style.categoryDiv}>
-                            <span>分類:</span>
-                            {index.category.map((categoryIndex,categoryKey)=>{
-                                return (
-                                <span key={`span-${categoryKey}`}>
-                                    {categoryIndex}
-                                </span>)
-                            })}
+                <Link href={`/blogdata/blogShow?id=${index.id}`}>
+                
+                    <div key = {key} className={Style.card}>
+                        <div>
+                            <h2>{index.title}</h2>
+                            <div className={Style.categoryDiv}>
+                                <span>分類:</span>
+                                {index.category.map((categoryIndex,categoryKey)=>{
+                                    return (
+                                    <span key={`span-${categoryKey}`}>
+                                        {categoryIndex}
+                                    </span>)
+                                })}
+                            </div>
+                        </div>
+                        <div className={Style.timeDiv}>
+                            <span>最後編輯時間:{index.editTime}</span>
                         </div>
                     </div>
-                    <div className={Style.timeDiv}>
-                        <span>最後編輯時間:{index.editTime}</span>
-                    </div>
-                </div>
+                </Link>
             )
         })
         return (
